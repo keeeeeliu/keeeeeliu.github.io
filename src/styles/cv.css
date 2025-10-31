@@ -1,0 +1,108 @@
+main {
+    font-family: 'Times New Roman';
+    font-size: 1em;
+}
+
+main a {
+    font-weight: bold;
+    color: #7aa2f7;
+    text-decoration: none;
+}
+
+main a:hover {
+    color: #8db3ff;
+    text-decoration: underline;
+}
+
+main a::after {
+    content: " ↗";
+    color: #7aa2f7;
+    font-size: 0.5em;
+    font-family: "Reddit Sans", serif;
+}
+  
+
+h2 {
+    font-weight: 100;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 1em;
+    margin: 0;
+}
+
+h3 {
+    margin: 0;
+    font-size: 1em;
+}
+
+h3>em {
+    font-weight: 100;
+    font-style: normal;
+}
+
+h4 {
+    font-size: 1em;
+    font-weight: 100;
+    margin: 0;
+}
+
+summary {
+    cursor: pointer;
+    user-select: none;
+}
+
+details {
+    margin-left: 1.5em;
+}
+
+hr {
+    border: 0.5px solid rgba(255, 255, 255, 0.15);
+    margin: 0.5em 0;
+}
+
+blockquote,
+blockquote p {
+    margin: 0;
+    color: #e8eef2;
+    font-size: 1em;
+    float: right;
+}
+
+@media (max-width: 800px) {
+    blockquote,
+    blockquote p {
+        display: none;
+    }
+}
+
+ul {
+    padding: 0 0 0 2em;
+    margin: 0;
+}
+
+p {
+    margin: 0;
+}
+
+.print {
+    display: none;
+}
+
+.not-print {
+    display: flex;
+    justify-content: end;
+}
+
+.not-print a:hover {
+    text-decoration: none;
+}
+
+.not-print img {
+    height: 1em;
+    width: 1em;
+}
+
+.not-print p {
+    display: flex;
+}
+
