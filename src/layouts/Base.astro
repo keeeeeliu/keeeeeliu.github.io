@@ -1,0 +1,37 @@
+---
+const { title = "", description = "" } = Astro.props as {
+  title?: string;
+  description?: string;
+};
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title ? `${title} · ` : ""}My Site</title>
+    <link rel="stylesheet" href="/styles/global.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="container">
+        <a href="/" class="brand">My Site</a>
+        <div class="spacer" />
+        <a href="/about">About</a>
+        <a href="/blog/hello-world">Blog</a>
+        <a href="/cv">CV</a>
+      </nav>
+    </header>
+    <main class="container">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="container">© {new Date().getFullYear()} · Built with Astro</div>
+    </footer>
+  </body>
+</html>
+
+
