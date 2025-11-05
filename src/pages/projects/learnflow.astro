@@ -1,0 +1,90 @@
+---
+import Base from "../../layouts/Base.astro";
+---
+
+<Base title="LearnFlow" description="LearnFlow project showcase">
+  <h1>LearnFlow</h1> 
+
+  <div class="project-showcase">
+    <img src="/project_gifs/learnflow1.gif" alt="Learnflow demo" />
+  </div>
+
+  <section>
+    <h2>Overview</h2>
+    <p>
+      You're deep into reading a technical article. The concepts are clicking. Your mind is racing. Then you hit it—binary search tree. Wait, what's that again?
+      You open a new tab. Google it. Skim Stack Overflow. Maybe watch a YouTube video. Ten minutes later, you've lost your place, your train of thought, and your momentum.
+    </p>
+
+    <p> 
+    Learning shouldn't break your flow. 
+    </p>
+
+    <p> 
+    LearnFlow keeps you in the zone. Simply select any unfamiliar term, get an instant AI-powered explanation right where you are, and continue reading—all without breaking stride. No context switching. No tab juggling. Just seamless learning that moves at the speed of your curiosity.
+    Perfect for students grinding LeetCode, developers exploring new tech stacks, or anyone learning computer science concepts.
+    </p>
+  </section>
+
+  <section>
+    <h2>Links</h2>
+    <p>
+      <a href="https://github.com/keeeeeliu/LearnFlow" target="_blank">View Source Code →</a>
+    </p>
+  </section>
+
+  <p>
+    <a href="/projects">← Back to Projects</a>
+  </p>
+</Base>
+
+<style>
+  .project-showcase {
+    margin: 2rem 0;
+  }
+
+  .project-showcase img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  section {
+    margin: 2rem 0;
+  }
+
+  section h2 {
+    margin-bottom: 1rem;
+  }
+
+  section h3 {
+    margin-bottom: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  section ul {
+    margin-left: 1.5rem;
+  }
+
+  section ol {
+    margin-left: 1.5rem;
+  }
+
+  section li {
+    margin: 0.5rem 0;
+  }
+
+  section code {
+    background-color: #f4f4f4;
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+  }
+
+  a {
+    color: #0066cc;
+    font-weight: bold;
+  }
+</style>

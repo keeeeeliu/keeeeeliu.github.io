@@ -42,6 +42,13 @@ nav {
   font-weight: 700;
   text-decoration: none;
   color: var(--text);
+  border-bottom: 2px solid transparent;
+  padding-bottom: 2px; /*control distance between underline and text*/
+  transition: border-color 0.3s;
+}
+
+.brand:hover {
+  border-color:aliceblue;
 }
 
 nav a {
