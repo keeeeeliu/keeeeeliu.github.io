@@ -20,21 +20,27 @@ const {
 
 <span class:list={["bunny-mark", { interactive }]} role="img" aria-label="bononokoko — a little bunny">
   <svg width={size} height={size} viewBox="0 0 100 100" aria-hidden="true">
-    <g class="rays">
-      <g stroke={sun} stroke-width="4" stroke-linecap="round">
-        <line x1="70" y1="4" x2="70" y2="11" />
-        <line x1="42" y1="30" x2="49" y2="30" />
-        <line x1="91" y1="30" x2="98" y2="30" />
-        <line x1="52" y1="12" x2="57" y2="17" />
-        <line x1="88" y1="12" x2="83" y2="17" />
+    <g class="solar">
+      <g class="rays">
+        <g stroke={sun} stroke-width="4" stroke-linecap="round">
+          <line x1="70" y1="4" x2="70" y2="11" />
+          <line x1="42" y1="30" x2="49" y2="30" />
+          <line x1="91" y1="30" x2="98" y2="30" />
+          <line x1="52" y1="12" x2="57" y2="17" />
+          <line x1="88" y1="12" x2="83" y2="17" />
+        </g>
       </g>
+      <circle class="sun" cx="70" cy="30" r="16" fill={sun} />
     </g>
-    <circle class="sun" cx="70" cy="30" r="16" fill={sun} />
     <g class="ears">
-      <ellipse cx="41" cy="20" rx="6.5" ry="19" fill={fur} transform="rotate(-10 41 20)" />
-      <ellipse cx="59" cy="20" rx="6.5" ry="19" fill={fur} transform="rotate(10 59 20)" />
-      <ellipse cx="41" cy="22" rx="2.6" ry="11" fill={ear} transform="rotate(-10 41 22)" />
-      <ellipse cx="59" cy="22" rx="2.6" ry="11" fill={ear} transform="rotate(10 59 22)" />
+      <g class="ear-left">
+        <ellipse cx="41" cy="20" rx="6.5" ry="19" fill={fur} transform="rotate(-10 41 20)" />
+        <ellipse cx="41" cy="22" rx="2.6" ry="11" fill={ear} transform="rotate(-10 41 22)" />
+      </g>
+      <g class="ear-right">
+        <ellipse cx="59" cy="20" rx="6.5" ry="19" fill={fur} transform="rotate(10 59 20)" />
+        <ellipse cx="59" cy="22" rx="2.6" ry="11" fill={ear} transform="rotate(10 59 22)" />
+      </g>
     </g>
     <circle cx="50" cy="44" r="17" fill={fur} />
     <ellipse cx="50" cy="72" rx="25" ry="22" fill={fur} />

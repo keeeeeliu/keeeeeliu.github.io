@@ -23,7 +23,7 @@ const fragments = defineCollection({
   }),
 });
 
-// The commonplace book.
+// Excerpts for the "collected" room.
 const quotes = defineCollection({
   loader: file("./src/content/quotes.json"),
   schema: z.object({

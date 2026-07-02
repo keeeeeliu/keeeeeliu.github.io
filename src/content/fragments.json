@@ -1,20 +1,14 @@
 [
   {
     "id": "f1",
-    "text": "Two bunnies teach you that trust is a slow, deliberate animal.",
+    "text": "...",
     "date": "2026-06-28",
     "lang": "en"
   },
   {
     "id": "f2",
-    "text": "写代码像种花：你负责浇水，剩下的交给时间。",
-    "date": "2026-06-20",
+    "text": "相濡以沫，不如相忘于江湖。",
+    "date": "2026-07-01",
     "lang": "zh"
-  },
-  {
-    "id": "f3",
-    "text": "A good website should feel like someone's actual room, not a lobby.",
-    "date": "2026-06-15",
-    "lang": "en"
   }
 ]

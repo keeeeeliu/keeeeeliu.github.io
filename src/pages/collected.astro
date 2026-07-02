@@ -5,14 +5,15 @@ import { getCollection } from "astro:content";
 const quotes = await getCollection("quotes");
 ---
 
-<Base title="commonplace book" description="Quotes and passages worth keeping.">
+<Base title="collected" description="Things I love, that I didn't make — songs, books, excerpts, and more.">
   <section class="hero" style="padding-bottom:1.5rem;">
-    <span class="eyebrow">commonplace book</span>
+    <span class="eyebrow">collected</span>
     <h1>Things worth keeping</h1>
-    <p class="lead">A wall of lines I return to — 中文 and english, side by side.</p>
+    <p class="lead">Things I love that I didn't make — songs, books, excerpts, objects, a certain kind of light. A running collection.</p>
   </section>
 
   <section class="reveal">
+    <h2>excerpts</h2>
     <div class="quotes">
       {quotes.map((q) => (
         <figure class="quote">
@@ -22,7 +23,6 @@ const quotes = await getCollection("quotes");
         </figure>
       ))}
     </div>
-    <p style="color:var(--muted); margin-top:1.5rem;">More lines gather here over time — add them to <code>src/content/quotes.json</code>.</p>
+    <p style="color:var(--muted); margin-top:1.5rem;">Songs, books, and other loves will gather here too — coming soon.</p>
   </section>
-
 </Base>

@@ -1,101 +1,64 @@
 ---
 import Base from "../layouts/Base.astro";
-
-const rooms = [
-  {
-    href: "/bunnies",
-    cls: "room-olive span-2",
-    icon: "the bunnies",
-    title: "Qi Yuan & Oliver",
-    desc: "a living photo diary of the two of them",
-    swatches: ["#D9B4AE", "#DDA030", "#6E7D4A"],
-  },
-  {
-    href: "/sounds",
-    cls: "room-mustard",
-    icon: "sounds",
-    title: "chocolates in sanya",
-    desc: "a little listening room",
-  },
-  {
-    href: "/making",
-    cls: "room-deep",
-    icon: "making",
-    title: "LearnFlow",
-    desc: "experiments & work, with the process",
-  },
-  {
-    href: "/words",
-    cls: "room-cream",
-    icon: "words",
-    title: "Hello world, and other beginnings",
-    desc: "essays and short fragments",
-  },
-  {
-    href: "/commonplace",
-    cls: "room-pink",
-    icon: "commonplace book",
-    title: "things worth keeping",
-    desc: "quotes I love, 中文 / english",
-  },
-  {
-    href: "/moments",
-    cls: "room-olive",
-    icon: "moments",
-    title: "a photo log",
-    desc: "ordinary days, in no order",
-    swatches: ["#DDA030", "#D9B4AE", "#F4EFE0"],
-  },
-  {
-    href: "/guestbook",
-    cls: "room-mustard",
-    icon: "guestbook",
-    title: "leave a note",
-    desc: "say hello — it means a lot",
-  },
-];
+import SoundCard from "../components/SoundCard.astro";
+import { rooms } from "../data/rooms";
 ---
 
 <Base title="" description="A small digital studio by Ke Liu — with two bunnies, some music, and a few experiments.">
   <section class="hero">
+    <img class="hero-sig" src="/images/sig.png" alt="" aria-hidden="true" decoding="async" />
+
+    <div class="hero-content">
     <span class="float" style="top:2rem; right:3rem; width:22px; height:22px; background:var(--pink);"></span>
     <span class="float" style="top:7rem; right:9rem; width:15px; height:15px; background:var(--mustard); animation-delay:-4s;"></span>
     <span class="float" style="bottom:2rem; right:5rem; width:28px; height:28px; background:var(--olive-2); animation-delay:-6s;"></span>
 
     <span class="eyebrow">a small digital studio · 你好</span>
     <h1 class="headline stagger">
-      <span style="animation-delay:.05s">make</span> <span style="animation-delay:.2s">things.</span><br />
-      <span style="animation-delay:.4s">keep</span> <span style="animation-delay:.55s">bunnies.</span><br />
-      <span class="hot" style="animation-delay:.75s">pay</span> <span class="hot" style="animation-delay:.9s">attention.</span>
+      <span style="animation-delay:.05s">listen</span> <span style="animation-delay:.2s">X.</span><br />
+      <span style="animation-delay:.4s">perceive</span> <span style="animation-delay:.55s">Y.</span><br />
+      <span class="hot" style="animation-delay:.75s">build</span> <span class="hot" style="animation-delay:.9s">Z.</span>
     </h1>
     <p class="lead">
-      A corner of the internet by Ke Liu — with Qi Yuan &amp; Oliver, some music,
-      and a few experiments. Wander around.
+      A corner of the internet by K.L. 刘珂— with Chris &amp; Oliver.
+      Welcome! Pet the bunny in the corner (it hops).
     </p>
     <p style="margin-top:1.4rem;">
       <a class="cta" href="/bunnies">wander in →</a>
     </p>
+    </div>
   </section>
 
   <section class="reveal" aria-label="Rooms">
     <div class="rooms">
       {
-        rooms.map((r) => (
-          <a class:list={["room", r.cls]} href={r.href}>
-            <div>
-              <span class="kicker">{r.icon}</span>
-              <div class="title">{r.title}</div>
-              <div class="desc">{r.desc}</div>
+        rooms.map((r) =>
+          r.href === "/sounds" ? (
+            <div class:list={["room", r.cls, "room-sound"]}>
+              <a class="room-stretch" href={r.href} aria-label={r.icon}>
+                <span class="kicker">{r.icon}</span>
+                <div class="title">{r.title}</div>
+                <div class="desc">{r.desc}</div>
+              </a>
+              <SoundCard title={r.title} embedded controlsOnly />
             </div>
-            {r.swatches && (
-              <div class="swatches">
-                {r.swatches.map((s) => (
-                  <span style={`background:${s}`} />
-                ))}
+          ) : (
+            <a class:list={["room", r.cls]} href={r.href}>
+              <div>
+                <span class="kicker">{r.icon}</span>
+                <div class="title">{r.title}</div>
+                <div class="desc">{r.desc}</div>
               </div>
-            )}
-          </a>
-        ))
+              {r.swatches && (
+                <div class="swatches">
+                  {r.swatches.map((s) => (
+                    <span style={`background:${s}`} />
+                  ))}
+                </div>
+              )}
+            </a>
+          )
+        )
       }
     </div>
   </section>
