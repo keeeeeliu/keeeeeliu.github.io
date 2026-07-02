@@ -1,0 +1,13 @@
+{
+  "files.associations": {
+    "*.astro": "astro"
+  },
+  "editor.semanticHighlighting.enabled": true,
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": "active",
+  "editor.fontSize": 14,
+  "editor.lineHeight": 1.6,
+  "[astro]": {
+    "editor.defaultFormatter": "astro-build.astro-vscode"
+  }
+}

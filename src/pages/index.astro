@@ -1,10 +1,15 @@
 ---
 import Base from "../layouts/Base.astro";
-import SoundCard from "../components/SoundCard.astro";
 import { rooms } from "../data/rooms";
+import { tracks } from "../data/tracks";
+import momentsData from "../content/moments.json";
+
+const momentPhotos = (momentsData as { caption: string; img?: string }[])
+  .filter((m) => m.img)
+  .slice(0, 4);
 ---
 
-<Base title="" description="A small digital studio by Ke Liu — with two bunnies, some music, and a few experiments.">
+<Base title="" description="A digital studio by Ke Liu — with two bunnies, some music, and a few experiments.">
   <section class="hero">
     <img class="hero-sig" src="/images/sig.png" alt="" aria-hidden="true" decoding="async" />
 
@@ -13,15 +18,15 @@ import { rooms } from "../data/rooms";
     <span class="float" style="top:7rem; right:9rem; width:15px; height:15px; background:var(--mustard); animation-delay:-4s;"></span>
     <span class="float" style="bottom:2rem; right:5rem; width:28px; height:28px; background:var(--olive-2); animation-delay:-6s;"></span>
 
-    <span class="eyebrow">a small digital studio · 你好</span>
+    <span class="eyebrow">hello · 你好 </span>
     <h1 class="headline stagger">
-      <span style="animation-delay:.05s">listen</span> <span style="animation-delay:.2s">X.</span><br />
-      <span style="animation-delay:.4s">perceive</span> <span style="animation-delay:.55s">Y.</span><br />
-      <span class="hot" style="animation-delay:.75s">build</span> <span class="hot" style="animation-delay:.9s">Z.</span>
+      <span style="animation-delay:.05s">dream</span> <span style="animation-delay:.2s">wide.</span><br />
+      <span style="animation-delay:.4s">explore</span> <span style="animation-delay:.55s">inside.</span><br />
+      <span class="hot" style="animation-delay:.75s">create and</span> <span class="hot" style="animation-delay:.9s">provide.</span>
     </h1>
     <p class="lead">
-      A corner of the internet by K.L. 刘珂— with Chris &amp; Oliver.
-      Welcome! Pet the bunny in the corner (it hops).
+      A whimsical space by K.L. 刘珂— with Chris 祁缘 &amp; Oliver 奥利.
+      Welcome! Pet the bunny in the corner.
     </p>
     <p style="margin-top:1.4rem;">
       <a class="cta" href="/bunnies">wander in →</a>
@@ -34,14 +39,29 @@ import { rooms } from "../data/rooms";
       {
         rooms.map((r) =>
           r.href === "/sounds" ? (
-            <div class:list={["room", r.cls, "room-sound"]}>
-              <a class="room-stretch" href={r.href} aria-label={r.icon}>
+            <a class:list={["room", r.cls, "room-sound-list"]} href={r.href}>
+              <span class="kicker">{r.icon} · {tracks.length} tracks</span>
+              <ul class="room-tracklist">
+                {tracks.slice(0, 4).map((t) => (
+                  <li><span class="rt-title">{t.title}</span><span class="rt-dur">{t.duration}</span></li>
+                ))}
+              </ul>
+              <span class="room-tracklist-more">listen to all {tracks.length} →</span>
+            </a>
+          ) : r.href === "/moments" ? (
+            <a class:list={["room", r.cls, "room-moments"]} href={r.href}>
+              <div class="room-moments-left">
                 <span class="kicker">{r.icon}</span>
                 <div class="title">{r.title}</div>
                 <div class="desc">{r.desc}</div>
-              </a>
-              <SoundCard title={r.title} embedded controlsOnly />
-            </div>
+              </div>
+              <div class="moments-strip">
+                {momentPhotos.map((m) => (
+                  <div class="moments-pol"><img src={m.img} alt={m.caption} loading="lazy" /></div>
+                ))}
+                <span class="moments-more">see all →</span>
+              </div>
+            </a>
           ) : (
             <a class:list={["room", r.cls]} href={r.href}>
               <div>
