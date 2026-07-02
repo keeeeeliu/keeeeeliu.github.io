@@ -10,11 +10,12 @@ const { title = "", description = "A digital studio by Ke Liu." } = Astro.props 
 };
 
 const nav = [
-  { href: "/bunnies", label: "the bunnies" },
   { href: "/making", label: "making" },
+  { href: "/sounds", label: "sounds" },
   { href: "/words", label: "words" },
   { href: "/moments", label: "moments" },
-  { href: "/sounds", label: "sounds" },
+  { href: "/bunnies", label: "the bunnies" },
+  { href: "/collected", label: "collected" },
 ];
 const path = Astro.url.pathname;
 const roomNav = getRoomNav(path);
@@ -170,8 +171,8 @@ const log = [
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       let viz: {
         analyser: AnalyserNode;
-        data: Uint8Array;
-        time: Uint8Array;
+        data: Uint8Array<ArrayBuffer>;
+        time: Uint8Array<ArrayBuffer>;
         canvas: HTMLCanvasElement;
         ctx: CanvasRenderingContext2D;
         ctxAudio: AudioContext;
@@ -200,7 +201,9 @@ const log = [
           canvas.style.height = size + "px";
           const ctx = canvas.getContext("2d")!;
           ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-          viz = { analyser, data: new Uint8Array(analyser.frequencyBinCount), time: new Uint8Array(analyser.fftSize), canvas, ctx, ctxAudio, raf: 0 };
+          const data = new Uint8Array(new ArrayBuffer(analyser.frequencyBinCount));
+          const time = new Uint8Array(new ArrayBuffer(analyser.fftSize));
+          viz = { analyser, data, time, canvas, ctx, ctxAudio, raf: 0 };
         } catch (e) { /* analyser unavailable */ }
       }
 
