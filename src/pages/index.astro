@@ -1,24 +1,102 @@
 ---
 import Base from "../layouts/Base.astro";
+
+const rooms = [
+  {
+    href: "/bunnies",
+    cls: "room-olive span-2",
+    icon: "the bunnies",
+    title: "Qi Yuan & Oliver",
+    desc: "a living photo diary of the two of them",
+    swatches: ["#D9B4AE", "#DDA030", "#6E7D4A"],
+  },
+  {
+    href: "/sounds",
+    cls: "room-mustard",
+    icon: "sounds",
+    title: "chocolates in sanya",
+    desc: "a little listening room",
+  },
+  {
+    href: "/making",
+    cls: "room-deep",
+    icon: "making",
+    title: "LearnFlow",
+    desc: "experiments & work, with the process",
+  },
+  {
+    href: "/words",
+    cls: "room-cream",
+    icon: "words",
+    title: "Hello world, and other beginnings",
+    desc: "essays and short fragments",
+  },
+  {
+    href: "/commonplace",
+    cls: "room-pink",
+    icon: "commonplace book",
+    title: "things worth keeping",
+    desc: "quotes I love, 中文 / english",
+  },
+  {
+    href: "/moments",
+    cls: "room-olive",
+    icon: "moments",
+    title: "a photo log",
+    desc: "ordinary days, in no order",
+    swatches: ["#DDA030", "#D9B4AE", "#F4EFE0"],
+  },
+  {
+    href: "/guestbook",
+    cls: "room-mustard",
+    icon: "guestbook",
+    title: "leave a note",
+    desc: "say hello — it means a lot",
+  },
+];
 ---
 
-<Base title="" description="Personal website starter built with Astro + MDX">
-  <section class="hero container">
-    <h1>你好👋</h1>
-    <p>
-      I live on the earth. I have two bunnies, Qi Yuan and Oliver. 
+<Base title="" description="A small digital studio by Ke Liu — with two bunnies, some music, and a few experiments.">
+  <section class="hero">
+    <span class="float" style="top:2rem; right:3rem; width:22px; height:22px; background:var(--pink);"></span>
+    <span class="float" style="top:7rem; right:9rem; width:15px; height:15px; background:var(--mustard); animation-delay:-4s;"></span>
+    <span class="float" style="bottom:2rem; right:5rem; width:28px; height:28px; background:var(--olive-2); animation-delay:-6s;"></span>
+
+    <span class="eyebrow">a small digital studio · 你好</span>
+    <h1 class="headline stagger">
+      <span style="animation-delay:.05s">make</span> <span style="animation-delay:.2s">things.</span><br />
+      <span style="animation-delay:.4s">keep</span> <span style="animation-delay:.55s">bunnies.</span><br />
+      <span class="hot" style="animation-delay:.75s">pay</span> <span class="hot" style="animation-delay:.9s">attention.</span>
+    </h1>
+    <p class="lead">
+      A corner of the internet by Ke Liu — with Qi Yuan &amp; Oliver, some music,
+      and a few experiments. Wander around.
     </p>
-    <p>
-      <a class="cta" href="/blog/hello-world">Read the first post</a>
+    <p style="margin-top:1.4rem;">
+      <a class="cta" href="/bunnies">wander in →</a>
     </p>
   </section>
 
-  <section class="container">
-    <h2>What’s inside</h2>
-    <ul>
-      <li>the bunnies</li>
-      <li>creative expression</li>
-      <li>moments</li>
-    </ul>
+  <section class="reveal" aria-label="Rooms">
+    <div class="rooms">
+      {
+        rooms.map((r) => (
+          <a class:list={["room", r.cls]} href={r.href}>
+            <div>
+              <span class="kicker">{r.icon}</span>
+              <div class="title">{r.title}</div>
+              <div class="desc">{r.desc}</div>
+            </div>
+            {r.swatches && (
+              <div class="swatches">
+                {r.swatches.map((s) => (
+                  <span style={`background:${s}`} />
+                ))}
+              </div>
+            )}
+          </a>
+        ))
+      }
+    </div>
   </section>
 </Base>

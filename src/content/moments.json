@@ -1,0 +1,8 @@
+[
+  { "id": "m1", "caption": "morning sun on the desk", "date": "2026-06-30", "kind": "sun" },
+  { "id": "m2", "caption": "the hills behind home", "date": "2026-06-22", "kind": "hills" },
+  { "id": "m3", "caption": "Oliver, mid-loaf", "date": "2026-06-18", "kind": "bunny" },
+  { "id": "m4", "caption": "a very quiet night", "date": "2026-06-10", "kind": "moon" },
+  { "id": "m5", "caption": "the plant that refuses to die", "date": "2026-06-02", "kind": "plant" },
+  { "id": "m6", "caption": "chocolates in sanya, literally", "date": "2026-05-24", "kind": "sea" }
+]

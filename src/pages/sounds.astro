@@ -1,0 +1,27 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="sounds" description="A little listening room.">
+  <section class="hero" style="padding-bottom:1.5rem;">
+    <span class="eyebrow">sounds</span>
+    <h1>A listening room</h1>
+    <p class="lead">Things I've made and things I loop. Turn the volume up.</p>
+  </section>
+
+  <section class="reveal">
+    <div class="room room-mustard" style="min-height:auto;">
+      <div>
+        <span class="kicker">made by me · ai-assisted</span>
+        <div class="title">chocolates in sanya</div>
+        <div class="desc">a warm little loop</div>
+      </div>
+      <audio controls loop src="/music/chocolates-in-sanya.wav" style="width:100%; margin-top:1rem;"></audio>
+    </div>
+  </section>
+
+  <script>
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: 0.12 });
+    document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+  </script>
+</Base>

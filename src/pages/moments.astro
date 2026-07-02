@@ -1,0 +1,35 @@
+---
+import Base from "../layouts/Base.astro";
+import Scene from "../components/Scene.astro";
+import { getCollection } from "astro:content";
+
+const moments = (await getCollection("moments")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+const fmt = (d: Date) => d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+---
+
+<Base title="moments" description="A photo log of ordinary days.">
+  <section class="hero" style="padding-bottom:1.5rem;">
+    <span class="eyebrow">moments</span>
+    <h1>A photo log</h1>
+    <p class="lead">Ordinary days, in no particular order. Illustrated until the real film comes in.</p>
+  </section>
+
+  <section class="reveal">
+    <div class="polaroids">
+      {moments.map((m) => (
+        <figure class="polaroid">
+          <div class="frame">
+            {m.data.img ? <img src={m.data.img} alt={m.data.caption} /> : <Scene kind={m.data.kind} />}
+          </div>
+          <figcaption>
+            <span>{m.data.caption}</span>
+            <span class="pdate">{fmt(m.data.date)}</span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </section>
+
+</Base>

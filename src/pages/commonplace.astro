@@ -1,0 +1,28 @@
+---
+import Base from "../layouts/Base.astro";
+import { getCollection } from "astro:content";
+
+const quotes = await getCollection("quotes");
+---
+
+<Base title="commonplace book" description="Quotes and passages worth keeping.">
+  <section class="hero" style="padding-bottom:1.5rem;">
+    <span class="eyebrow">commonplace book</span>
+    <h1>Things worth keeping</h1>
+    <p class="lead">A wall of lines I return to — 中文 and english, side by side.</p>
+  </section>
+
+  <section class="reveal">
+    <div class="quotes">
+      {quotes.map((q) => (
+        <figure class="quote">
+          {q.data.zh && <blockquote class="voice quote-zh">{q.data.zh}</blockquote>}
+          {q.data.en && <p class="quote-en">{q.data.en}</p>}
+          <figcaption>— {q.data.who}{q.data.source ? `, ${q.data.source}` : ""}</figcaption>
+        </figure>
+      ))}
+    </div>
+    <p style="color:var(--muted); margin-top:1.5rem;">More lines gather here over time — add them to <code>src/content/quotes.json</code>.</p>
+  </section>
+
+</Base>
