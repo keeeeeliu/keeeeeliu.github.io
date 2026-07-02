@@ -1,8 +1,0 @@
-[
-  { "id": "m1", "caption": "where is the Goose", "date": "2026-06-30", "kind": "sun", "img": "/images/IMG_3486.jpg" },
-  { "id": "m2", "caption": "Chris", "date": "2026-06-22", "kind": "hills", "img": "/images/chris01.png" },
-  { "id": "m3", "caption": "Oliver", "date": "2026-06-18", "kind": "bunny", "img": "/images/oliver01.png" },
-  { "id": "m4", "caption": "the Trees rooted in her heart", "date": "2026-06-10", "kind": "moon", "img": "/images/theTree.png" },
-  { "id": "m5", "caption": "New England Summer", "date": "2026-06-02", "kind": "plant", "img": "/images/hydrangea.png" },
-  { "id": "m6", "caption": "knock knock, here i am", "date": "2026-05-24", "kind": "sea", "img": "/images/carnation.png" }
-]
