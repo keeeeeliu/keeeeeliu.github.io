@@ -1,0 +1,320 @@
+---
+import { ClientRouter } from "astro:transitions";
+import BunnyMark from "../components/BunnyMark.astro";
+import RoomNav from "../components/RoomNav.astro";
+import { getRoomNav } from "../data/rooms";
+
+const { title = "", description = "A digital studio by Ke Liu." } = Astro.props as {
+  title?: string;
+  description?: string;
+};
+
+const nav = [
+  { href: "/making", label: "making" },
+  { href: "/sounds", label: "sounds" },
+  { href: "/words", label: "words" },
+  { href: "/moments", label: "moments" },
+  { href: "/bunnies", label: "the bunnies" },
+  { href: "/collected", label: "collected" },
+];
+const path = Astro.url.pathname;
+const roomNav = getRoomNav(path);
+
+// the garden log — what changed lately
+const log = [
+  { date: "Jul 2026", note: "redesigned the whole house 🐇" },
+  { date: "Jun 2026", note: "planted the first words" },
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon-bunny.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Shantell+Sans:wght@700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Ma+Shan+Zheng&family=Liu+Jian+Mao+Cao&family=Work+Sans:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles/global.css" />
+    <title>{title && title.trim() ? `${title} · bononokoko` : "bononokoko · Ke Liu"}</title>
+    <ClientRouter />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="container">
+        <a href="/" class="brand" aria-label="bononokoko — home">
+          <BunnyMark size={34} interactive />
+          <span class="wordmark">bononokoko</span>
+        </a>
+        <details class="mobile-menu">
+          <summary aria-label="Open navigation menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </summary>
+          <div class="mobile-menu-panel">
+            {
+              nav.map((item) => (
+                <a
+                  class="navlink"
+                  href={item.href}
+                  aria-current={path === item.href ? "page" : undefined}
+                >
+                  {item.label}
+                </a>
+              ))
+            }
+          </div>
+        </details>
+        <div class="navlinks">
+          {
+            nav.map((item) => (
+              <a
+                class="navlink"
+                href={item.href}
+                aria-current={path === item.href ? "page" : undefined}
+              >
+                {item.label}
+              </a>
+            ))
+          }
+        </div>
+      </nav>
+    </header>
+
+    {
+      path !== "/" && (
+        <div class="page-watermark" aria-hidden="true">
+          <img src="/images/sig.png" alt="" decoding="async" />
+        </div>
+      )
+    }
+
+    <main class="container">
+      <slot />
+    </main>
+
+    {roomNav && <RoomNav nav={roomNav} />}
+
+    <footer class="site-footer">
+      <div class="container">
+        <span class="log-title">the garden log</span>
+        <ul>
+          {log.map((l) => <li><span style="color:var(--terracotta)">{l.date}</span> — {l.note}</li>)}
+        </ul>
+        <div class="social">
+          <a href="https://github.com/keeeeeliu" aria-label="GitHub">GitHub</a>
+          <a href="mailto:elkaliuke@gmail.com" aria-label="Email">Email</a>
+          <a href="https://www.linkedin.com/in/ke-l-58763718a/" aria-label="LinkedIn">LinkedIn</a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- floating music control — persists across page navigation -->
+    <div class="bgm-dock" transition:persist>
+      <audio id="bgm-audio" src="/music/chocolates-in-sanya.wav" loop preload="auto" controlslist="nodownload noplaybackrate noremoteplayback"></audio>
+      <canvas id="bgm-viz" class="bgm-viz" aria-hidden="true"></canvas>
+      <button id="bgm-toggle" class="bgm-btn" aria-label="Play background music" aria-pressed="false">
+        <svg class="vinyl" viewBox="0 0 100 100" width="56" height="56" aria-hidden="true">
+          <circle cx="50" cy="50" r="49" fill="#211F1B" />
+          <g fill="none" stroke="rgba(237,231,214,0.10)" stroke-width="1.3">
+            <circle cx="50" cy="50" r="43" />
+            <circle cx="50" cy="50" r="37" />
+            <circle cx="50" cy="50" r="31" />
+            <circle cx="50" cy="50" r="25" />
+          </g>
+          <path d="M50 6 A44 44 0 0 1 94 50" fill="none" stroke="rgba(237,231,214,0.16)" stroke-width="2.5" stroke-linecap="round" />
+          <circle cx="50" cy="50" r="16" fill="#DDA030" />
+          <circle cx="50" cy="50" r="10" fill="none" stroke="rgba(122,84,16,0.55)" stroke-width="1" />
+          <circle cx="50" cy="50" r="3" fill="#211F1B" />
+        </svg>
+        <span class="bgm-tip">chocolates in sanya</span>
+      </button>
+    </div>
+
+    <script>
+      // Only one site audio source at a time (BGM, sound cards, page players).
+      if (!document.documentElement.dataset.audioExclusive) {
+        document.documentElement.dataset.audioExclusive = "1";
+        document.addEventListener(
+          "play",
+          (e) => {
+            const target = e.target;
+            if (!(target instanceof HTMLAudioElement)) return;
+            document.querySelectorAll("audio").forEach((a) => {
+              if (a !== target) a.pause();
+            });
+          },
+          true
+        );
+      }
+
+      // Reveal-on-scroll — re-runs after every page transition.
+      function setupReveal() {
+        const els = document.querySelectorAll(".reveal:not(.in)");
+        if (!els.length) return;
+        const io = new IntersectionObserver(
+          (entries) => entries.forEach((e) => {
+            if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+          }),
+          { threshold: 0.08 }
+        );
+        els.forEach((el) => io.observe(el));
+      }
+
+      // Audio-reactive visualizer — a ring of bars around the vinyl that dance to the music.
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      let viz: {
+        analyser: AnalyserNode;
+        data: Uint8Array<ArrayBuffer>;
+        time: Uint8Array<ArrayBuffer>;
+        canvas: HTMLCanvasElement;
+        ctx: CanvasRenderingContext2D;
+        ctxAudio: AudioContext;
+        raf: number;
+      } | null = null;
+
+      function ensureViz(audio: HTMLAudioElement) {
+        if (viz || reduceMotion) return;
+        const canvas = document.getElementById("bgm-viz") as HTMLCanvasElement | null;
+        if (!canvas) return;
+        const AC = (window.AudioContext || (window as any).webkitAudioContext);
+        if (!AC) return;
+        try {
+          const ctxAudio = new AC();
+          const src = ctxAudio.createMediaElementSource(audio);
+          const analyser = ctxAudio.createAnalyser();
+          analyser.fftSize = 256;
+          analyser.smoothingTimeConstant = 0.72;
+          src.connect(analyser);
+          analyser.connect(ctxAudio.destination);
+          const dpr = Math.min(window.devicePixelRatio || 1, 2);
+          const size = 140;
+          canvas.width = size * dpr;
+          canvas.height = size * dpr;
+          canvas.style.width = size + "px";
+          canvas.style.height = size + "px";
+          const ctx = canvas.getContext("2d")!;
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          const data = new Uint8Array(new ArrayBuffer(analyser.frequencyBinCount));
+          const time = new Uint8Array(new ArrayBuffer(analyser.fftSize));
+          viz = { analyser, data, time, canvas, ctx, ctxAudio, raf: 0 };
+        } catch (e) { /* analyser unavailable */ }
+      }
+
+      // One closed oscilloscope ring: the audio waveform wraps the vinyl (mirrored so the
+      // loop closes), the whole ring breathes outward with the bass. Big, lively, in sync.
+      function drawViz() {
+        if (!viz) return;
+        viz.raf = requestAnimationFrame(drawViz);
+        const { analyser, data, time, ctx } = viz;
+        analyser.getByteFrequencyData(data);
+        analyser.getByteTimeDomainData(time);
+        const size = 140, cx = size / 2, cy = size / 2;
+        let bass = 0; for (let k = 0; k < 12; k++) bass += data[k];
+        bass = bass / (12 * 255);
+        const baseR = 31 + bass * 15;
+        const amp = 22;
+        const points = 120;
+        const step = Math.max(1, Math.floor(time.length / (points / 2)));
+        const rot = (performance.now() / 1000) * 0.25;
+        ctx.clearRect(0, 0, size, size);
+        ctx.beginPath();
+        for (let i = 0; i <= points; i++) {
+          const idx = i % points;
+          const mir = idx < points / 2 ? idx : points - idx;
+          const s = (time[mir * step] - 128) / 128;
+          const r = baseR + s * amp;
+          const a = (idx / points) * Math.PI * 2 - Math.PI / 2 + rot;
+          const x = cx + Math.cos(a) * r, y = cy + Math.sin(a) * r;
+          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.fillStyle = "rgba(176,73,43," + (0.08 + bass * 0.2) + ")";
+        ctx.fill();
+        ctx.lineJoin = "round";
+        ctx.strokeStyle = "rgba(176,73,43," + (0.55 + bass * 0.4) + ")";
+        ctx.lineWidth = 2.8;
+        ctx.stroke();
+      }
+
+      function startViz() {
+        if (!viz || viz.raf) return;
+        viz.ctxAudio.resume?.();
+        drawViz();
+      }
+      function stopViz() {
+        if (!viz || !viz.raf) return;
+        cancelAnimationFrame(viz.raf);
+        viz.raf = 0;
+        viz.ctx.clearRect(0, 0, 140, 140);
+      }
+
+      // Background music — autoplay if allowed, else start on first interaction.
+      function setupBGM() {
+        const audio = document.getElementById("bgm-audio") as HTMLAudioElement | null;
+        const btn = document.getElementById("bgm-toggle");
+        if (!audio || !btn) return;
+        const sync = () => {
+          btn.classList.toggle("playing", !audio.paused);
+          btn.setAttribute("aria-pressed", String(!audio.paused));
+          btn.setAttribute("aria-label", audio.paused ? "Play background music" : "Pause background music");
+        };
+        const onPlay = () => { ensureViz(audio); startViz(); sync(); };
+        if (!btn.dataset.bound) {
+          btn.dataset.bound = "1";
+          btn.addEventListener("click", async () => {
+            if (audio.paused) { try { await audio.play(); } catch (e) {} }
+            else { audio.pause(); }
+            sync();
+          });
+          audio.addEventListener("play", onPlay);
+          audio.addEventListener("pause", () => { stopViz(); sync(); });
+        }
+        if (!audio.dataset.tried) {
+          audio.dataset.tried = "1";
+          audio.play().then(onPlay).catch(() => {
+            const start = () => { audio.play().then(onPlay).catch(() => {}); };
+            const evs = ["pointerdown", "keydown", "touchstart"];
+            const once = () => { start(); evs.forEach((ev) => document.removeEventListener(ev, once)); };
+            evs.forEach((ev) => document.addEventListener(ev, once, { once: true }));
+          });
+        }
+        sync();
+      }
+
+      // Discourage saving the audio — block the right-click "Save audio as" menu on media.
+      document.addEventListener("contextmenu", (e) => {
+        if (e.target instanceof HTMLMediaElement) e.preventDefault();
+      });
+
+      // Bunny hops when clicked (delegated once, survives navigation).
+      document.addEventListener("click", (e) => {
+        const t = e.target as HTMLElement;
+        const m = t.closest?.(".bunny-mark.interactive");
+        if (m) { m.classList.remove("hop"); void (m as HTMLElement).offsetWidth; m.classList.add("hop"); }
+      });
+
+      // Mobile menu closes after a choice or an outside tap.
+      document.addEventListener("click", (e) => {
+        const target = e.target as HTMLElement;
+        document.querySelectorAll("details.mobile-menu[open]").forEach((menu) => {
+          if (target.closest?.(".mobile-menu") === menu) {
+            if (target.closest?.(".mobile-menu-panel a")) (menu as HTMLDetailsElement).open = false;
+            return;
+          }
+          (menu as HTMLDetailsElement).open = false;
+        });
+      });
+
+      document.addEventListener("astro:page-load", () => { setupReveal(); setupBGM(); });
+      setupReveal();
+      setupBGM();
+    </script>
+  </body>
+</html>

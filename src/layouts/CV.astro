@@ -1,0 +1,47 @@
+---
+const { title = "", description = "", lang = "en", variant = "en" } = Astro.props as {
+  title?: string;
+  description?: string;
+  lang?: string;
+  variant?: "en" | "zh";
+};
+
+const pathname = Astro.url.pathname;
+const isZh = variant === "zh";
+
+if (!isZh) {
+  await import("../styles/cv.css");
+}
+---
+
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    <title>{title && title.trim() ? `${title} · Ke Liu` : "Ke Liu"}</title>
+    <link rel="stylesheet" href="/styles/global.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="container">
+        <a href="/" class="brand">Ke Liu</a>
+        <div class="spacer" />
+        <a href="/about">About</a>
+        <a href="/blog/hello-world">Blog</a>
+        <a href="/cv" aria-current={pathname === "/cv" ? "page" : undefined}>CV</a>
+        <a href="/cv/zh" aria-current={pathname === "/cv/zh" ? "page" : undefined}>简历</a>
+        <a href="/projects">Projects</a>
+      </nav>
+    </header>
+    <main class="container">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="container">Last updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+    </footer>
+  </body>
+</html>
+

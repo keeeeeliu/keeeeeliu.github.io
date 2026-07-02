@@ -1,0 +1,86 @@
+---
+import Base from "../layouts/Base.astro";
+import { tracks } from "../data/tracks";
+---
+
+<Base title="sounds" description="A listening room — music I made, AI-assisted.">
+  <section class="hero" style="padding-bottom:1.5rem;">
+    <span class="eyebrow">sounds · made by bonono · ai-assisted</span>
+    <h1>A listening room</h1>
+    <p class="lead">Had fun with Suno. Press play — turn the volume up.</p>
+  </section>
+
+  <section class="reveal">
+    <ol class="playlist">
+      {
+        tracks.map((t, i) => (
+          <li class="track">
+            <button class="track-play" type="button" data-src={t.src} aria-label={`Play ${t.title}`} aria-pressed="false">
+              <svg class="icon-play" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                <path d="M7.5 5 19 12 7.5 19z" fill="currentColor"></path>
+              </svg>
+              <svg class="icon-pause" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                <g fill="currentColor"><rect x="7.5" y="5.5" width="3.4" height="13" rx="1.6"></rect><rect x="13.1" y="5.5" width="3.4" height="13" rx="1.6"></rect></g>
+              </svg>
+            </button>
+            <span class="track-num">{String(i + 1).padStart(2, "0")}</span>
+            <span class="track-meta">
+              <span class="track-titleline">
+                <span class="track-title">{t.title}</span>
+                {t.tag && <span class="track-tag">{t.tag}</span>}
+              </span>
+            </span>
+            <span class="track-eq" aria-hidden="true"><span style="--eq-delay:0s" /><span style="--eq-delay:.12s" /><span style="--eq-delay:.24s" /><span style="--eq-delay:.36s" /></span>
+            <span class="track-dur">{t.duration}</span>
+          </li>
+        ))
+      }
+    </ol>
+    <audio id="sounds-audio" loop preload="none" controlslist="nodownload noplaybackrate noremoteplayback"></audio>
+  </section>
+
+  <script>
+    function setupPlaylist() {
+      const audio = document.getElementById("sounds-audio") as HTMLAudioElement | null;
+      const tracks = Array.from(document.querySelectorAll<HTMLElement>(".track"));
+      if (!audio || !tracks.length || audio.dataset.bound) return;
+      audio.dataset.bound = "1";
+      let current: HTMLElement | null = null;
+
+      const clearActive = () => {
+        tracks.forEach((t) => t.classList.remove("is-playing"));
+      };
+      const markActive = () => {
+        tracks.forEach((t) => t.classList.toggle("is-playing", t === current && !audio.paused));
+        tracks.forEach((t) => {
+          const btn = t.querySelector(".track-play");
+          btn?.setAttribute("aria-pressed", String(t === current && !audio.paused));
+        });
+      };
+
+      tracks.forEach((track) => {
+        const btn = track.querySelector(".track-play") as HTMLButtonElement | null;
+        const src = btn?.dataset.src;
+        if (!btn || !src) return;
+        btn.addEventListener("click", async () => {
+          if (current === track && !audio.paused) {
+            audio.pause();
+            markActive();
+            return;
+          }
+          if (audio.src !== location.origin + src) audio.src = src;
+          current = track;
+          try { await audio.play(); } catch {}
+          markActive();
+        });
+      });
+
+      audio.addEventListener("play", markActive);
+      audio.addEventListener("pause", markActive);
+      audio.addEventListener("ended", () => { clearActive(); markActive(); });
+    }
+
+    setupPlaylist();
+    document.addEventListener("astro:page-load", setupPlaylist);
+  </script>
+</Base>

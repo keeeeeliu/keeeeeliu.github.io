@@ -1,0 +1,27 @@
+[
+  {
+    "id": "hesse-seeker",
+    "zh": "我不认为自己世事练达。我曾经是，现在依然是个探索者，但我不再去星辰或书本里寻找知识，而是开始倾听内心血液的沸腾。",
+    "en": "I do not consider myself worldly-wise. I was, and still am, a seeker — but I no longer search among the stars or in books; I have begun to listen to the blood whispering in my veins.",
+    "who": "Hermann Hesse",
+    "source": "Demian"
+  },
+  {
+    "id": "rilke-questions",
+    "en": "Be patient toward all that is unsolved in your heart and try to love the questions themselves.",
+    "who": "Rainer Maria Rilke",
+    "source": "Letters to a Young Poet"
+  },
+  {
+    "id": "zhuangzi-butterfly",
+    "zh": "不知周之梦为蝴蝶与，蝴蝶之梦为周与。",
+    "en": "I do not know whether I was then a man dreaming I was a butterfly, or whether I am now a butterfly dreaming I am a man.",
+    "who": "庄子 Zhuangzi"
+  },
+  {
+    "id": "oliver-attention",
+    "en": "Attention is the beginning of devotion.",
+    "who": "Mary Oliver",
+    "source": "Upstream"
+  }
+]

@@ -1,0 +1,115 @@
+---
+import Base from "../../layouts/Base.astro";
+---
+
+<Base title="PARC Website" description="Redesigned website for the Pediatric Anxiety Research Center at Brown.">
+  <a href="/making" class="eyebrow project-back">← making</a>
+  <h1>Pediatric Anxiety Research Center</h1>
+
+  <p class="lead">
+    Fall 2025 team project with Full Stack at Brown — our group was assigned to redesign the public
+    site for the Pediatric Anxiety Research Center, a clinical research program at Bradley Hospital.
+  </p>
+
+  <div class="project-actions">
+    <a class="cta" href="https://www.parcanxiety.org/" target="_blank" rel="noreferrer">Visit live site →</a>
+  </div>
+
+  <p class="project-meta">Frontend Developer · Providence, RI · Fall 2025</p>
+
+  <section>
+    <h2>The Org</h2>
+    <p>
+      <a href="https://www.fullstackatbrown.com/" target="_blank" rel="noreferrer">Full Stack at Brown</a>
+      is Brown's student web development organization. Since 2019, FSAB has built websites on a
+      pro-bono basis for local nonprofits, student groups, and research teams. PARC was our semester
+      assignment — a real client, a real deadline, and a team split across design, frontend, and backend.
+    </p>
+  </section>
+
+  <section>
+    <h2>The Client</h2>
+    <p>
+      PARC has provided assessment and treatment for children with OCD and anxiety disorders at
+      Bradley Hospital since 1999. Their old site buried important paths — outpatient services,
+      intensive programs, active research studies — under layers of clinical language. Families
+      looking for help shouldn't have to hunt for it.
+    </p>
+  </section>
+
+  <section class="project-grid">
+    <div>
+      <h2>My Role</h2>
+      <p>
+        I joined as frontend developer on a small team. My work sat at the intersection of design
+        handoff and backend integration: turning layouts into responsive pages, building new sections
+        for grant and research content, and iterating through code reviews and design discussions
+        with the rest of the group.
+      </p>
+    </div>
+    <div>
+      <h2>What We Shipped</h2>
+      <ul>
+        <li>
+          A responsive redesign with clearer navigation across treatment, research, and training
+          pages.
+        </li>
+        <li>
+          New feature areas for community mental health grant initiatives and research study
+          information — built in close collaboration with our designer and backend engineers.
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>A Note</h2>
+    <p>
+      Working on a site whose audience includes anxious parents made navigation clarity feel less
+      like polish and more like care. Small UX decisions — where a phone number lives, how a
+      program page opens — mattered more here than on most projects I've touched.
+    </p>
+  </section>
+</Base>
+
+<style>
+  .project-back {
+    display: inline-block;
+    margin-bottom: 1rem;
+  }
+
+  .project-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    margin: 1.6rem 0 1rem;
+  }
+
+  .project-meta {
+    color: var(--muted);
+    font-size: 0.92rem;
+    margin-bottom: 2rem;
+  }
+
+  section {
+    margin: 2.2rem 0;
+  }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(220px, 0.8fr);
+    gap: 2rem;
+  }
+
+  li {
+    margin: 0.45rem 0;
+  }
+
+  @media (max-width: 720px) {
+    .project-grid {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+  }
+</style>

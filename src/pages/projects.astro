@@ -1,0 +1,37 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Projects" description="My projects and work">
+  <h1>Projects</h1>
+  <p>
+    Here are some of the projects I've worked on.
+  </p>
+
+  <section class="project">
+    <h2>Grad Events &amp; Newsletter Copilot</h2>
+    <p>A Next.js + FastAPI tool that helps curate Brown graduate events and draft the monthly newsletter with human review.</p>
+    <a href="/projects/grad-events-copilot">View Project →</a>
+  </section>
+
+  <section class="project">
+    <h2>LearnFlow <img src="/icons/learnflow.png" alt="LearnFlow" class="project-icon" /></h2>
+    <p>LearnFlow is a Chrome extension that transforms your browsing experience into an interactive learning environment. Simply select any technical term on a webpage, and get instant AI-powered explanations, real-world examples, interactive quizzes, and the ability to ask follow-up questions.</p>
+    <a href="/projects/learnflow">View Project →</a>
+  </section>
+
+</Base>
+
+<style>
+  a {
+    color: #0066cc;
+    font-weight: bold;
+  }
+
+  .project-icon {
+    height: 1.2em;
+    width: 1.2em;
+    vertical-align: middle;
+    margin-left: 0.3em;
+  }
+</style>

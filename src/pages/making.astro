@@ -1,0 +1,56 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="making" description="Experiments and work — with the process, not just the polish.">
+  <section class="hero" style="padding-bottom:1.5rem;">
+    <span class="eyebrow">making</span>
+    <h1>Experiments &amp; work</h1>
+    <p class="lead">Things I've built, with a little of the process behind them — the false starts too.</p>
+  </section>
+
+  <section class="reveal">
+    <div class="rooms">
+      <a class="room room-olive span-2" href="/projects/grad-events-copilot">
+        <div>
+          <span class="kicker">AI workflow tool</span>
+          <div class="title">Grad Events &amp; Newsletter Copilot</div>
+          <div class="desc">Turns Brown campus events into a curated grad newsletter draft, cutting monthly prep from hours to focused review.</div>
+        </div>
+        <div class="swatches"><span style="background:#D9B4AE"></span><span style="background:#DDA030"></span><span style="background:#C7D0AE"></span></div>
+      </a>
+
+      <a class="room room-deep span-2" href="/projects/learnflow">
+        <div>
+          <span class="kicker">chrome extension</span>
+          <div class="title">LearnFlow</div>
+          <div class="desc">Select any term on a page and get instant explanations, examples, and quizzes. A browser that teaches while you read.</div>
+        </div>
+        <div class="swatches"><span style="background:#DDA030"></span><span style="background:#6E7D4A"></span><span style="background:#D9B4AE"></span></div>
+      </a>
+
+      <a class="room room-terracotta span-2" href="/projects/parc">
+        <div>
+          <span class="kicker">full stack at brown · team project</span>
+          <div class="title">Pediatric Anxiety Research Center</div>
+          <div class="desc">Pro-bono redesign for a Brown-affiliated anxiety research center — clearer paths to care, grants, and studies.</div>
+        </div>
+        <div class="swatches"><span style="background:#EBC3B4"></span><span style="background:#EDE7D6"></span><span style="background:#6E7D4A"></span></div>
+      </a>
+
+      <a class="room room-mustard" href="/projects/bononokoko">
+        <div>
+          <span class="kicker">personal site</span>
+          <div class="title">bononokoko</div>
+          <div class="desc">The site itself — room-based navigation, a custom design system, and a few experiments in one place.</div>
+        </div>
+        <div class="swatches"><span style="background:#6B4F3A"></span><span style="background:#D9B4AE"></span><span style="background:#EDE7D6"></span></div>
+      </a>
+    </div>
+  </section>
+
+  <script>
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: 0.12 });
+    document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+  </script>
+</Base>

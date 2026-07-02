@@ -1,0 +1,151 @@
+---
+import Base from "../layouts/Base.astro";
+import BunnyMark from "../components/BunnyMark.astro";
+import { getCollection } from "astro:content";
+
+const diary = (await getCollection("bunnyDiary")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+type GalleryItem =
+  | { type: "image"; src: string; alt: string; focus?: string }
+  | { type: "video"; src: string; alt: string; focus?: string };
+
+const gallery: GalleryItem[] = [
+  { type: "image", src: "/images/chris01.png", alt: "Chris watching from a corner" },
+  { type: "image", src: "/images/oliver01.png", alt: "Oliver mid-investigation" },
+  { type: "image", src: "/images/oliver02.jpg", alt: "Oliver on the floor" },
+  { type: "image", src: "/images/oliver03.png", alt: "Oliver up close", focus: "center 88%" },
+  { type: "video", src: "/videos/bunnies/bun01.MOV", alt: "Chris and Oliver — morning zoomies" },
+  { type: "video", src: "/videos/bunnies/bun02.MP4", alt: "Oliver exploring the room", focus: "center 28%" },
+  { type: "video", src: "/videos/bunnies/bun03.MP4", alt: "The bunnies sharing a quiet moment" },
+];
+
+const fmt = (d: Date) => d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+---
+
+<Base title="the bunnies" description="Chris & Oliver — a living photo diary.">
+  <section class="hero" style="padding-bottom:1.5rem;">
+    <span class="eyebrow">the bunnies</span>
+    <h1>Chris &amp; Oliver</h1>
+    <p class="lead">
+      Two bunnies I live with. This is their room — a diary of naps, zoomies,
+      and the occasional act of destruction.
+    </p>
+    <p style="margin-top:1rem;"><BunnyMark size={64} interactive /></p>
+  </section>
+
+  <section class="reveal">
+    <div class="rooms" style="grid-template-columns:1fr 1fr;">
+      <div class="room room-pink"><div><span class="kicker">Chris · 祁缘 · white</span><div class="title">the grumpy</div><div class="desc">watches everything, trusts slowly, loves a warm corner.</div></div></div>
+      <div class="room room-olive"><div><span class="kicker">Oliver · 奥利 · orange</span><div class="title">the menace</div><div class="desc">fast, curious, has opinions about cables.</div></div></div>
+    </div>
+  </section>
+
+  <section class="reveal" style="margin-top:2.5rem;">
+    <h2>photos &amp; clips</h2>
+    <p class="lead" style="margin-bottom:1.25rem;">Naps, zoomies, and the occasional act of destruction — stills and short videos from their room.</p>
+    <div class="gallery">
+      {gallery.map((item) => (
+        item.type === "image" ? (
+          <div class="tile">
+            <img
+              src={item.src}
+              alt={item.alt}
+              loading="lazy"
+              decoding="async"
+              style={item.focus ? `object-position:${item.focus}` : undefined}
+            />
+          </div>
+        ) : (
+          <div class="tile tile-clip is-paused" data-clip>
+            <video
+              class="clip-media"
+              src={item.src}
+              muted
+              loop
+              playsinline
+              preload="metadata"
+              aria-label={item.alt}
+              style={item.focus ? `object-position:${item.focus}` : undefined}
+            ></video>
+            <button type="button" class="clip-btn" aria-label={`Play ${item.alt}`}>
+              <span class="clip-icon clip-icon-play" aria-hidden="true"></span>
+              <span class="clip-icon clip-icon-pause" aria-hidden="true"></span>
+            </button>
+            <div class="clip-bar" aria-hidden="true"><span class="clip-bar-fill"></span></div>
+          </div>
+        )
+      ))}
+    </div>
+  </section>
+
+  <section class="reveal" style="margin-top:2.5rem;">
+    <h2>from the diary</h2>
+    <div class="diary">
+      {diary.map((e) => (
+        <article class="entry">
+          <div class="date">{fmt(e.data.date)}</div>
+          <h3>{e.data.title}</h3>
+          <p>{e.data.body}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <script>
+    function setupClips() {
+      document.querySelectorAll("[data-clip]").forEach((tile) => {
+        if (tile.dataset.bound) return;
+        tile.dataset.bound = "1";
+
+        const video = tile.querySelector("video");
+        const btn = tile.querySelector(".clip-btn");
+        const fill = tile.querySelector(".clip-bar-fill");
+        if (!(video instanceof HTMLVideoElement) || !(btn instanceof HTMLButtonElement) || !(fill instanceof HTMLElement)) return;
+
+        const label = video.getAttribute("aria-label") || "video";
+
+        const sync = () => {
+          const paused = video.paused;
+          tile.classList.toggle("is-playing", !paused);
+          tile.classList.toggle("is-paused", paused);
+          btn.setAttribute("aria-label", paused ? `Play ${label}` : `Pause ${label}`);
+          if (video.duration) {
+            fill.style.width = `${(video.currentTime / video.duration) * 100}%`;
+          }
+        };
+
+        const toggle = async () => {
+          if (video.paused) {
+            document.querySelectorAll("[data-clip] video").forEach((other) => {
+              if (other !== video) other.pause();
+            });
+            video.muted = false;
+            try {
+              await video.play();
+            } catch {}
+          } else {
+            video.pause();
+          }
+          sync();
+        };
+
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          toggle();
+        });
+        tile.addEventListener("click", toggle);
+        video.addEventListener("timeupdate", sync);
+        video.addEventListener("play", sync);
+        video.addEventListener("pause", sync);
+        video.addEventListener("ended", sync);
+        sync();
+      });
+    }
+
+    setupClips();
+    document.addEventListener("astro:page-load", setupClips);
+  </script>
+
+</Base>
