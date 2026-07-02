@@ -1,0 +1,145 @@
+---
+import Base from "../../layouts/Base.astro";
+---
+
+<Base title="Grad Events & Newsletter Copilot" description="A Brown grad events and newsletter copilot built with Next.js and FastAPI.">
+  <a href="/making" class="eyebrow project-back">← making</a>
+  <h1>Grad Events &amp; Newsletter Copilot</h1>
+
+  <p class="lead">
+    A real-world AI tool for my Brown graduate community work: collect campus events,
+    rank what matters for grad students, and turn the result into a newsletter draft I can review.
+  </p>
+
+  <div class="project-actions">
+    <a class="cta" href="https://sparks-livid.vercel.app/" target="_blank" rel="noreferrer">Open tool →</a>
+    <a href="https://github.com/keeeeeliu/sparks/tree/main/project-brown-grad-events-copilot" target="_blank" rel="noreferrer">Source code →</a>
+  </div>
+
+  <figure class="project-demo">
+    <video
+      src="/project_gifs/grad-events-copilot.mp4"
+      poster="/project_gifs/grad-events-copilot-poster.jpg"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      aria-label="Screen recording of the live Grad Events tool interface"
+    ></video>
+    <figcaption>End-to-end flow: set dates, fetch events, select social events, and generate newsletter blurbs.</figcaption>
+  </figure>
+
+  <section>
+    <h2>Why I Built It</h2>
+    <p>
+      Each month, preparing the grad newsletter meant scanning scattered calendars, checking for
+      duplicate events, deciding what was actually relevant, and rewriting everything into a format
+      students could skim. The work was useful, but repetitive enough that good events could get
+      missed simply because the search was tiring.
+    </p>
+    <p>
+      This copilot turns that workflow into a focused review pass: fetch the events, structure them,
+      dedupe them, score their graduate-student relevance, and leave the final editorial judgment to me.
+    </p>
+  </section>
+
+  <section class="project-grid">
+    <div>
+      <h2>What It Does</h2>
+      <ul>
+        <li>Fetches structured Brown calendar events from LiveWhale.</li>
+        <li>Deduplicates recurring or repeated listings.</li>
+        <li>Uses LLM enrichment to infer audience, category, and grad relevance.</li>
+        <li>Ranks events against a target newsletter audience.</li>
+        <li>Keeps the workflow human-in-the-loop before anything is published or sent.</li>
+      </ul>
+    </div>
+    <div>
+      <h2>Impact</h2>
+      <p>
+        The first live wave cuts newsletter prep from roughly three hours of manual scanning to
+        about fifteen minutes of focused review, while surfacing relevant events that are easy to
+        miss during a long calendar pass.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2>How It Works</h2>
+    <p>
+      The frontend is a Next.js app deployed on Vercel. It sends date ranges to a FastAPI backend
+      on Railway, where the AI pipeline runs server-side so API keys never touch the browser.
+      The backend ingests Brown events, deduplicates them, enriches them concurrently with an LLM,
+      ranks the results, caches the selected events, and returns a clean JSON response to the UI.
+    </p>
+  </section>
+
+  <section>
+    <h2>Stack</h2>
+    <p>
+      Next.js, Zustand, FastAPI, Python, Pydantic, OpenAI, Vercel, Railway, structured extraction,
+      dedupe, ranking, and human-in-the-loop review.
+    </p>
+  </section>
+</Base>
+
+<style>
+  .project-back {
+    display: inline-block;
+    margin-bottom: 1rem;
+  }
+
+  .project-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    margin: 1.6rem 0 2.4rem;
+  }
+
+  .project-actions a:not(.cta) {
+    color: var(--terracotta);
+    font-weight: 500;
+  }
+
+  section {
+    margin: 2.2rem 0;
+  }
+
+  .project-demo {
+    margin: 2rem 0 2.6rem;
+  }
+
+  .project-demo video {
+    display: block;
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 12px 28px rgba(44, 53, 43, 0.13);
+    background: var(--cream-2);
+  }
+
+  .project-demo figcaption {
+    margin-top: 0.6rem;
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(220px, 0.8fr);
+    gap: 2rem;
+  }
+
+  li {
+    margin: 0.45rem 0;
+  }
+
+  @media (max-width: 720px) {
+    .project-grid {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+  }
+</style>
