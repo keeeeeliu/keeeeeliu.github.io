@@ -1,145 +1,86 @@
 ---
-import Base from "../../layouts/Base.astro";
+import Project from "../../layouts/Project.astro";
 ---
 
-<Base title="Grad Events & Newsletter Copilot" description="A Brown grad events and newsletter copilot built with Next.js and FastAPI.">
-  <a href="/making" class="eyebrow project-back">← making</a>
-  <h1>Grad Events &amp; Newsletter Copilot</h1>
-
-  <p class="lead">
-    A real-world AI tool for my Brown graduate community work: collect campus events,
-    rank what matters for grad students, and turn the result into a newsletter draft I can review.
-  </p>
-
-  <div class="project-actions">
-    <a class="cta" href="https://sparks-livid.vercel.app/" target="_blank" rel="noreferrer">Open tool →</a>
-    <a href="https://github.com/keeeeeliu/sparks/tree/main/project-brown-grad-events-copilot" target="_blank" rel="noreferrer">Source code →</a>
-  </div>
-
-  <figure class="project-demo">
-    <video
-      src="/project_gifs/grad-events-copilot.mp4"
-      poster="/project_gifs/grad-events-copilot-poster.jpg"
-      autoplay
-      muted
-      loop
-      playsinline
-      preload="metadata"
-      aria-label="Screen recording of the live Grad Events tool interface"
-    ></video>
-    <figcaption>End-to-end flow: set dates, fetch events, select social events, and generate newsletter blurbs.</figcaption>
-  </figure>
-
+<Project
+  title="Grad Events & Newsletter Copilot"
+  kind="ai workflow tool · solo, shipped"
+  description="A production AI tool for Brown grad newsletter prep — campus events, relevance scoring, and on-voice drafts."
+  lead="A production AI tool I built and deployed for my graduate-community work at Brown: it aggregates campus events, scores what actually matters to grad students, and drafts the monthly newsletter — while I keep the editorial call. It cut my prep from ~3 hours to ~15 minutes."
+  links={[
+    { label: "Open the live tool →", href: "https://sparks-livid.vercel.app/", primary: true },
+    { label: "Source code →", href: "https://github.com/keeeeeliu/sparks/tree/main/project-brown-grad-events-copilot" },
+  ]}
+  media={{
+    kind: "video",
+    src: "/project_gifs/grad-events-copilot.mp4",
+    poster: "/project_gifs/grad-events-copilot-poster.jpg",
+    alt: "Screen recording of the live Grad Events tool interface",
+    caption: "End-to-end: set the date window → fetch & score events → pick what belongs → generate on-voice blurbs → copy into the newsletter.",
+  }}
+  facts={[
+    { label: "Role", value: "Solo — build & ship" },
+    { label: "Year", value: "2026" },
+    { label: "For", value: "Brown grad community" },
+    { label: "Impact", value: "~3h → ~15 min / issue" },
+    { label: "Status", value: "Deployed & live" },
+  ]}
+  stack={["Next.js", "TypeScript", "Tailwind", "Zustand", "FastAPI", "Python", "Pydantic", "OpenAI", "Vercel", "Railway"]}
+>
   <section>
-    <h2>Why I Built It</h2>
+    <h2>Why I built it</h2>
     <p>
-      Each month, preparing the grad newsletter meant scanning scattered calendars, checking for
-      duplicate events, deciding what was actually relevant, and rewriting everything into a format
-      students could skim. The work was useful, but repetitive enough that good events could get
-      missed simply because the search was tiring.
-    </p>
-    <p>
-      This copilot turns that workflow into a focused review pass: fetch the events, structure them,
-      dedupe them, score their graduate-student relevance, and leave the final editorial judgment to me.
-    </p>
-  </section>
-
-  <section class="project-grid">
-    <div>
-      <h2>What It Does</h2>
-      <ul>
-        <li>Fetches structured Brown calendar events from LiveWhale.</li>
-        <li>Deduplicates recurring or repeated listings.</li>
-        <li>Uses LLM enrichment to infer audience, category, and grad relevance.</li>
-        <li>Ranks events against a target newsletter audience.</li>
-        <li>Keeps the workflow human-in-the-loop before anything is published or sent.</li>
-      </ul>
-    </div>
-    <div>
-      <h2>Impact</h2>
-      <p>
-        The first live wave cuts newsletter prep from roughly three hours of manual scanning to
-        about fifteen minutes of focused review, while surfacing relevant events that are easy to
-        miss during a long calendar pass.
-      </p>
-    </div>
-  </section>
-
-  <section>
-    <h2>How It Works</h2>
-    <p>
-      The frontend is a Next.js app deployed on Vercel. It sends date ranges to a FastAPI backend
-      on Railway, where the AI pipeline runs server-side so API keys never touch the browser.
-      The backend ingests Brown events, deduplicates them, enriches them concurrently with an LLM,
-      ranks the results, caches the selected events, and returns a clean JSON response to the UI.
+      Producing the monthly grad newsletter meant scanning scattered calendars, weeding out duplicate
+      listings, judging what was relevant to grad students, and reformatting everything by hand — a few
+      hours of low-value work every cycle. So I built a copilot that does the gathering, de-duplication,
+      and relevance scoring and drafts the newsletter, while the editorial judgment stays with me. It's
+      part of my actual workflow, not a demo.
     </p>
   </section>
 
   <section>
-    <h2>Stack</h2>
+    <h2>What it does</h2>
+    <ul>
+      <li>Pulls structured events from Brown's LiveWhale calendar feed</li>
+      <li>De-duplicates recurring / multi-source listings (a real month: 331 raw → 105 unique)</li>
+      <li>
+        LLM enrichment scores each event's grad-relevance, audience, and category — grounded, with a
+        one-line rationale for every score
+      </li>
+      <li>Ranks and groups events into newsletter sections</li>
+      <li>Generates on-voice blurbs (few-shot tuned to past newsletters) with one-click "improve"</li>
+      <li>Human-in-the-loop throughout — I decide what makes the cut</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Engineered like a product, not an LLM wrapper</h2>
+    <ul>
+      <li>Multi-stage pipeline (ingest → dedupe → LLM enrichment → rank), not a single prompt call</li>
+      <li>Structured output validated with Pydantic, plus grounded / anti-hallucination extraction</li>
+      <li>Cost &amp; latency telemetry — tokens and $ per run tracked in-app</li>
+      <li>Evaluation harness measuring enrichment quality vs. hand labels — the part most portfolios skip</li>
+      <li>Cut a full month's enrichment from ~207s → ~27s (~7.5×) with concurrent per-event calls</li>
+      <li>Deployed &amp; live: Next.js on Vercel, FastAPI on Railway — the API key never touches the browser</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>How it works</h2>
     <p>
-      Next.js, Zustand, FastAPI, Python, Pydantic, OpenAI, Vercel, Railway, structured extraction,
-      dedupe, ranking, and human-in-the-loop review.
+      The Next.js frontend calls a FastAPI backend that runs the whole pipeline and holds the LLM key
+      server-side. One "Fetch events" click flows: browser → HTTPS → FastAPI → fetch Brown's calendar →
+      dedupe → concurrent LLM scoring → JSON back → the UI re-renders. (Full request walkthrough in the
+      repo README.)
     </p>
   </section>
-</Base>
 
-<style>
-  .project-back {
-    display: inline-block;
-    margin-bottom: 1rem;
-  }
-
-  .project-actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 1rem;
-    margin: 1.6rem 0 2.4rem;
-  }
-
-  .project-actions a:not(.cta) {
-    color: var(--terracotta);
-    font-weight: 500;
-  }
-
-  section {
-    margin: 2.2rem 0;
-  }
-
-  .project-demo {
-    margin: 2rem 0 2.6rem;
-  }
-
-  .project-demo video {
-    display: block;
-    width: 100%;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    box-shadow: 0 12px 28px rgba(44, 53, 43, 0.13);
-    background: var(--cream-2);
-  }
-
-  .project-demo figcaption {
-    margin-top: 0.6rem;
-    color: var(--muted);
-    font-size: 0.88rem;
-  }
-
-  .project-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(220px, 0.8fr);
-    gap: 2rem;
-  }
-
-  li {
-    margin: 0.45rem 0;
-  }
-
-  @media (max-width: 720px) {
-    .project-grid {
-      grid-template-columns: 1fr;
-      gap: 0.5rem;
-    }
-  }
-</style>
+  <section>
+    <h2>What's next (Wave B)</h2>
+    <p>
+      An agentic outreach assistant: a LangGraph agent drafts personalized emails to campus orgs —
+      grounded in the events we already know about — then pauses for my approval before anything sends.
+      Human-in-the-loop, with persistent workflow state. (In progress.)
+    </p>
+  </section>
+</Project>

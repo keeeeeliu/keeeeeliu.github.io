@@ -1,0 +1,84 @@
+---
+import Base from "./Base.astro";
+
+interface Link { label: string; href: string; primary?: boolean; }
+interface Fact { label: string; value: string; }
+interface Media { kind: "image" | "video"; src: string; poster?: string; alt?: string; caption?: string; }
+
+interface Props {
+  title: string;
+  kind: string;
+  lead: string;
+  description?: string;
+  links?: Link[];
+  media?: Media;
+  facts?: Fact[];
+  stack?: string[];
+}
+
+const { title, kind, lead, description, links = [], media, facts = [], stack = [] } = Astro.props;
+---
+
+<Base title={title} description={description ?? lead}>
+  <article class="pj">
+    <a class="pj-back eyebrow" href="/making">← making</a>
+
+    <header class="pj-head">
+      <span class="pj-kind">{kind}</span>
+      <h1 class="pj-title">{title}</h1>
+      <p class="pj-lead">{lead}</p>
+      {
+        links.length > 0 && (
+          <div class="pj-links">
+            {links.map((l) => (
+              <a class:list={["pj-link", l.primary && "cta"]} href={l.href} target="_blank" rel="noreferrer">
+                {l.label}
+              </a>
+            ))}
+          </div>
+        )
+      }
+    </header>
+
+    {
+      media && (
+        <figure class="pj-media">
+          {media.kind === "video" ? (
+            <video src={media.src} poster={media.poster} autoplay muted loop playsinline preload="metadata" aria-label={media.alt}></video>
+          ) : (
+            <img src={media.src} alt={media.alt} />
+          )}
+          {media.caption && <figcaption>{media.caption}</figcaption>}
+        </figure>
+      )
+    }
+
+    <div class="pj-body">
+      <div class="pj-main">
+        <slot />
+      </div>
+      <aside class="pj-aside">
+        {
+          facts.length > 0 && (
+            <div class="pj-card">
+              {facts.map((f) => (
+                <div class="pj-fact">
+                  <span class="pj-fact-label">{f.label}</span>
+                  <span class="pj-fact-value">{f.value}</span>
+                </div>
+              ))}
+            </div>
+          )
+        }
+        {
+          stack.length > 0 && (
+            <div class="pj-card">
+              <span class="pj-card-title">stack</span>
+              <div class="pj-tags">{stack.map((s) => <span class="pj-tag">{s}</span>)}</div>
+            </div>
+          )
+        }
+      </aside>
+    </div>
+  </article>
+</Base>

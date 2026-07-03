@@ -1,5 +1,6 @@
 ---
 import Base from "../layouts/Base.astro";
+import BunnyMark from "../components/BunnyMark.astro";
 ---
 
 <Base title="making" description="Experiments and work — with the process, not just the polish.">
@@ -10,42 +11,52 @@ import Base from "../layouts/Base.astro";
   </section>
 
   <section class="reveal">
-    <div class="rooms">
-      <a class="room room-olive span-2" href="/projects/grad-events-copilot">
-        <div>
-          <span class="kicker">AI workflow tool</span>
-          <div class="title">Grad Events &amp; Newsletter Copilot</div>
-          <div class="desc">Turns Brown campus events into a curated grad newsletter draft, cutting monthly prep from hours to focused review.</div>
-        </div>
-        <div class="swatches"><span style="background:#D9B4AE"></span><span style="background:#DDA030"></span><span style="background:#C7D0AE"></span></div>
-      </a>
+    <div class="making-layout">
+      <div class="making-projects">
+        <a class="room room-olive" href="/projects/grad-events-copilot">
+          <div>
+            <span class="kicker">AI workflow tool</span>
+            <div class="title">Grad Events &amp; Newsletter Copilot</div>
+            <div class="desc">Turns Brown campus events into a curated grad newsletter draft, cutting monthly prep from hours to focused review.</div>
+          </div>
+        </a>
 
-      <a class="room room-deep span-2" href="/projects/learnflow">
-        <div>
-          <span class="kicker">chrome extension</span>
-          <div class="title">LearnFlow</div>
-          <div class="desc">Select any term on a page and get instant explanations, examples, and quizzes. A browser that teaches while you read.</div>
-        </div>
-        <div class="swatches"><span style="background:#DDA030"></span><span style="background:#6E7D4A"></span><span style="background:#D9B4AE"></span></div>
-      </a>
+        <a class="room room-deep" href="/projects/learnflow">
+          <div>
+            <span class="kicker">chrome extension</span>
+            <div class="title">LearnFlow</div>
+            <div class="desc">Select any term on a page and get instant explanations, examples, and quizzes. A browser that teaches while you read.</div>
+          </div>
+        </a>
 
-      <a class="room room-terracotta span-2" href="/projects/parc">
-        <div>
-          <span class="kicker">full stack at brown · team project</span>
-          <div class="title">Pediatric Anxiety Research Center</div>
-          <div class="desc">Pro-bono redesign for a Brown-affiliated anxiety research center — clearer paths to care, grants, and studies.</div>
-        </div>
-        <div class="swatches"><span style="background:#EBC3B4"></span><span style="background:#EDE7D6"></span><span style="background:#6E7D4A"></span></div>
-      </a>
+        <a class="room room-mustard" href="/projects/asteroids">
+          <div>
+            <span class="kicker">browser game</span>
+            <div class="title">Asteroids</div>
+            <div class="desc">A keyboard-controlled arcade game with difficulty settings, shields, portals, scoring, and animated collision logic.</div>
+          </div>
+        </a>
 
-      <a class="room room-mustard" href="/projects/bononokoko">
-        <div>
-          <span class="kicker">personal site</span>
-          <div class="title">bononokoko</div>
-          <div class="desc">The site itself — room-based navigation, a custom design system, and a few experiments in one place.</div>
-        </div>
-        <div class="swatches"><span style="background:#6B4F3A"></span><span style="background:#D9B4AE"></span><span style="background:#EDE7D6"></span></div>
-      </a>
+        <a class="room room-terracotta" href="/projects/parc">
+          <div>
+            <span class="kicker">full stack at brown · team project</span>
+            <div class="title">Pediatric Anxiety Research Center</div>
+            <div class="desc">Pro-bono redesign for a Brown-affiliated anxiety research center — clearer paths to care, grants, and studies.</div>
+          </div>
+        </a>
+      </div>
+
+      <aside class="making-aside">
+        <a class="site-card" href="/projects/bononokoko">
+          <BunnyMark size={54} interactive />
+          <div class="site-card-text">
+            <span class="site-card-kick">the site itself</span>
+            <div class="site-card-title">bononokoko</div>
+          <div class="site-card-desc">You're reading it — a project too.</div>
+          </div>
+          <span class="site-card-more">how it's built →</span>
+        </a>
+      </aside>
     </div>
   </section>
 

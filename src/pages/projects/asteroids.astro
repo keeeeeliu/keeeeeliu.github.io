@@ -1,0 +1,59 @@
+---
+import Project from "../../layouts/Project.astro";
+---
+
+<Project
+  title="Asteroids"
+  kind="browser game · coursework project"
+  description="A static browser arcade game built with HTML, CSS, JavaScript, and jQuery."
+  lead="A keyboard-controlled arcade game built as a web page: dodge asteroids, collect shields, travel through portals, and keep your score climbing as the danger increases."
+  links={[
+    { label: "Play live game →", href: "https://keeeeeliu.github.io/asteroids-game/", primary: true },
+    { label: "Source code →", href: "https://github.com/keeeeeliu/asteroids-game" },
+  ]}
+  facts={[
+    { label: "Type", value: "Static web game" },
+    { label: "Year", value: "2024" },
+    { label: "Controls", value: "Arrow keys" },
+    { label: "Built for", value: "EECS 493" },
+    { label: "Status", value: "Ready to deploy separately" },
+  ]}
+  stack={["HTML", "CSS", "JavaScript", "jQuery", "Sprites", "Audio"]}
+>
+  <section>
+    <h2>What it is</h2>
+    <p>
+      Asteroids is a single-page browser game. It runs from an <code>index.html</code> file with local
+      JavaScript, CSS, image sprites, and sound effects, so it can be deployed as a static site without
+      a backend.
+    </p>
+  </section>
+
+  <section>
+    <h2>Gameplay</h2>
+    <ul>
+      <li>Move the spaceship with the arrow keys</li>
+      <li>Dodge animated asteroids that travel across the game window</li>
+      <li>Collect shields for temporary protection</li>
+      <li>Use portals to advance levels and raise the challenge</li>
+      <li>Adjust volume and difficulty before starting</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Why it belongs here</h2>
+    <p>
+      The project is small, but it shows the core mechanics of an interactive web experience:
+      keyboard input, collision detection, timed object spawning, score updates, game state transitions,
+      and asset-driven animation.
+    </p>
+  </section>
+
+  <section>
+    <h2>Deployment note</h2>
+    <p>
+      The game itself lives in a separate GitHub repository and is deployed with GitHub Pages, so this
+      portfolio page can link out to the playable version without copying the game files into BellaWeb.
+    </p>
+  </section>
+</Project>

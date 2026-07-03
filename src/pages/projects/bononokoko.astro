@@ -1,131 +1,134 @@
 ---
 import Base from "../../layouts/Base.astro";
+import BunnyMark from "../../components/BunnyMark.astro";
+
+const palette = [
+  { name: "cream", hex: "#EDE7D6" },
+  { name: "olive", hex: "#4F5D34" },
+  { name: "terracotta", hex: "#B0492B" },
+  { name: "mustard", hex: "#DDA030" },
+  { name: "dusty pink", hex: "#D9B4AE" },
+  { name: "coffee", hex: "#6B4F3A" },
+  { name: "deep green", hex: "#2C352B" },
+];
+
+const rooms = [
+  { name: "the bunnies", desc: "a living diary for Chris & Oliver", href: "/bunnies" },
+  { name: "making", desc: "projects and the process", href: "/making" },
+  { name: "words", desc: "essays and fragments", href: "/words" },
+  { name: "moments", desc: "an informal photo log", href: "/moments" },
+  { name: "sounds", desc: "a small listening room", href: "/sounds" },
+  { name: "collected", desc: "excerpts worth keeping", href: "/collected" },
+];
+
+const stack = ["Astro", "TypeScript", "MDX collections", "view transitions", "vanilla CSS tokens", "Web Audio API", "GitHub Pages"];
 ---
 
-<Base title="bononokoko" description="Personal site — portfolio, writing, and small experiments in one place.">
-  <a href="/making" class="eyebrow project-back">← making</a>
-  <h1>bononokoko</h1>
+<Base title="bononokoko" description="A colophon — the design system, type, and details behind this site.">
+  <article class="cph">
+    <a class="cph-back eyebrow" href="/making">← making</a>
 
-  <p class="lead">
-    The site you're browsing — a personal home on the web for projects, essays, photos, and a
-    few quiet experiments. Built and redesigned by me, room by room.
-  </p>
+    <header class="cph-head">
+      <span class="cph-kick">the site itself · colophon</span>
+      <h1 class="cph-title">bononokoko</h1>
+      <p class="cph-lead">
+        The site you're browsing — a personal home on the web for projects, essays, photos, and a few
+        quiet experiments. Built and redesigned by me, room by room. This page shows how it's made.
+      </p>
+      <div class="cph-actions">
+        <a class="cta" href="/">Explore the live site →</a>
+      </div>
+    </header>
 
-  <div class="project-actions">
-    <a class="cta" href="/">Explore the live site →</a>
-    <a href="https://github.com/keeeeeliu/website" target="_blank" rel="noreferrer">Source code →</a>
-  </div>
+    <section class="cph-block">
+      <h2 class="cph-h">the palette</h2>
+      <div class="cph-pal">
+        {
+          palette.map((c) => (
+            <div class="cph-sw">
+              <div class="cph-chip" style={`background:${c.hex}`}></div>
+              <div class="cph-cap"><span class="cph-nm">{c.name}</span><span class="cph-hx">{c.hex}</span></div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
 
-  <p class="project-meta">Personal project · keeeeliu.io · 2025–2026</p>
+    <section class="cph-block">
+      <h2 class="cph-h">the type</h2>
+      <div class="cph-type">
+        <div class="cph-trow">
+          <span class="cph-lab">Shantell Sans · wordmark</span>
+          <span class="cph-samp" style="font-family:var(--font-word); font-weight:800; font-size:2rem;">bononokoko</span>
+        </div>
+        <div class="cph-trow">
+          <span class="cph-lab">Fraunces · display</span>
+          <span class="cph-samp" style="font-family:var(--font-display); font-weight:600; font-size:1.9rem;">make things.</span>
+        </div>
+        <div class="cph-trow">
+          <span class="cph-lab">Newsreader · reading</span>
+          <span class="cph-samp" style="font-family:var(--font-read); font-size:1.2rem;">Longer pieces, when I have something to say.</span>
+        </div>
+        <div class="cph-trow">
+          <span class="cph-lab">Work Sans · interface</span>
+          <span class="cph-samp" style="font-family:var(--font-body); font-size:0.95rem; letter-spacing:0.05em; text-transform:uppercase;">the bunnies · making · words</span>
+        </div>
+        <div class="cph-trow cph-trow-last">
+          <span class="cph-lab">Ma Shan Zheng / Liu Jian Mao Cao · 中文</span>
+          <span class="cph-samp">
+            <span style="font-family:var(--font-cjk); font-size:1.7rem;">我依然是个探索者</span>
+            <span style="font-family:var(--font-cjk-ui); font-size:1.9rem; margin-left:0.6rem;">你好</span>
+          </span>
+        </div>
+      </div>
+    </section>
 
-  <section>
-    <h2>Why I Built It</h2>
-    <p>
-      I wanted one place that felt like mine — not a LinkedIn export or a generic portfolio
-      template. Somewhere to show work with context, publish writing in both English and Chinese,
-      and leave room for things that don't fit a résumé: bunny photos, a listening corner, collected
-      quotes. The structure came from that intent: a house with rooms, not a list of tabs.
-    </p>
-  </section>
+    <section class="cph-block">
+      <h2 class="cph-h">the mark</h2>
+      <div class="cph-mark">
+        <BunnyMark size={68} interactive />
+        <p class="cph-mark-note">
+          A sitting bunny under a little sun — it blinks, twitches its ears, and hops when you click it.
+          Chris &amp; Oliver, basically.
+        </p>
+      </div>
+    </section>
 
-  <section class="project-grid">
-    <div>
-      <h2>What It Is</h2>
-      <ul>
-        <li><a href="/making">making</a> — projects and the process behind them</li>
-        <li><a href="/words">words</a> — essays and short fragments</li>
-        <li><a href="/moments">moments</a> — an informal photo log</li>
-        <li><a href="/sounds">sounds</a> — a small listening room with ambient tracks</li>
-        <li><a href="/bunnies">the bunnies</a> — a living diary for Chris &amp; Oliver</li>
-        <li><a href="/collected">collected</a> — excerpts and things worth keeping</li>
+    <section class="cph-block">
+      <h2 class="cph-h">motion &amp; details</h2>
+      <ul class="cph-details">
+        <li>Cards lift with a soft shadow on hover — paper you could pick up.</li>
+        <li>A persistent vinyl in the corner spins to the music, ringed by an audio-reactive waveform.</li>
+        <li>Sections reveal on scroll; the hero words rise in one by one.</li>
+        <li>Everything respects <code>prefers-reduced-motion</code>.</li>
       </ul>
-    </div>
-    <div>
-      <h2>What I Built</h2>
-      <ul>
-        <li>Room-based navigation with a sticky header and page-to-page transitions.</li>
-        <li>A custom earthy-retro design system — typography, palette, responsive card grid.</li>
-        <li>Content collections for essays, fragments, quotes, moments, and bunny diary entries.</li>
-        <li>A persistent background-music dock with an audio-reactive vinyl visualizer.</li>
-        <li>Reveal-on-scroll animations with reduced-motion fallbacks.</li>
-      </ul>
-    </div>
-  </section>
+    </section>
 
-  <section>
-    <h2>Stack</h2>
-    <p>
-      Astro, MDX content collections, TypeScript, view transitions (<code>ClientRouter</code>),
-      vanilla CSS with design tokens, Web Audio API for the music visualizer, deployed to
-      GitHub Pages at <a href="https://keeeeliu.io" target="_blank" rel="noreferrer">keeeeliu.io</a>.
-    </p>
-  </section>
+    <section class="cph-block">
+      <h2 class="cph-h">the rooms</h2>
+      <div class="cph-rooms">
+        {
+          rooms.map((r) => (
+            <a class="cph-room" href={r.href}>
+              <span class="cph-room-name">{r.name}</span>
+              <span class="cph-room-desc">{r.desc}</span>
+            </a>
+          ))
+        }
+      </div>
+    </section>
 
-  <section>
-    <h2>A Note</h2>
-    <p>
-      This project page lives inside the thing it describes — which is either recursive or honest,
-      depending on your tolerance for meta. Either way, the craft is in the details: how a room card
-      feels on hover, where the bunny hops, whether the music visualizer respects
-      <code>prefers-reduced-motion</code>. That's the kind of frontend work I care about.
-    </p>
-  </section>
+    <section class="cph-block">
+      <h2 class="cph-h">stack</h2>
+      <div class="cph-tags">{stack.map((s) => <span class="cph-tag">{s}</span>)}</div>
+    </section>
+
+    <section class="cph-block">
+      <h2 class="cph-h">a note</h2>
+      <p class="cph-note">
+        This project page lives inside the thing it describes — recursive or honest, depending on your
+        tolerance for meta.
+      </p>
+    </section>
+  </article>
 </Base>
-
-<style>
-  .project-back {
-    display: inline-block;
-    margin-bottom: 1rem;
-  }
-
-  .project-actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 1rem;
-    margin: 1.6rem 0 1rem;
-  }
-
-  .project-actions a:not(.cta) {
-    color: var(--terracotta);
-    font-weight: 500;
-  }
-
-  .project-meta {
-    color: var(--muted);
-    font-size: 0.92rem;
-    margin-bottom: 2rem;
-  }
-
-  section {
-    margin: 2.2rem 0;
-  }
-
-  .project-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(220px, 0.8fr);
-    gap: 2rem;
-  }
-
-  li {
-    margin: 0.45rem 0;
-  }
-
-  section ul a {
-    color: var(--terracotta);
-  }
-
-  section code {
-    font-size: 0.88em;
-    background: color-mix(in srgb, var(--border) 55%, transparent);
-    padding: 0.12rem 0.35rem;
-    border-radius: 4px;
-  }
-
-  @media (max-width: 720px) {
-    .project-grid {
-      grid-template-columns: 1fr;
-      gap: 0.5rem;
-    }
-  }
-</style>
