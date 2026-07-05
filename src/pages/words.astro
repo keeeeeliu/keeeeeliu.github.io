@@ -20,14 +20,18 @@ const fmt = (d: Date) => d.toLocaleDateString("en-US", { month: "short", day: "n
 
   <section class="reveal">
     <h2>essays</h2>
-    <ul class="entry-list">
-      {essays.map((e) => (
-        <li>
-          <a href={`/words/${e.id}`} class="voice entry-title">{e.data.title}</a>
-          <div class="entry-meta">{fmt(e.data.date)}{e.data.summary ? ` · ${e.data.summary}` : ""}</div>
-        </li>
-      ))}
-    </ul>
+    {essays.length > 0 ? (
+      <ul class="entry-list">
+        {essays.map((e) => (
+          <li>
+            <a href={`/words/${e.id}`} class="voice entry-title">{e.data.title}</a>
+            <div class="entry-meta">{fmt(e.data.date)}{e.data.summary ? ` · ${e.data.summary}` : ""}</div>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p style="color:var(--muted);">Nothing here yet — longer pieces are on the way.</p>
+    )}
   </section>
 
   <section class="reveal" style="margin-top:2.5rem;">

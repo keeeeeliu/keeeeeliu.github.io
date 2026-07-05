@@ -36,51 +36,45 @@ import { tracks } from "../data/tracks";
         ))
       }
     </ol>
-    <audio id="sounds-audio" loop preload="none" controlslist="nodownload noplaybackrate noremoteplayback"></audio>
   </section>
 
   <script>
+    import {
+      getCurrentTrack,
+      normalizeSrc,
+      pauseAllAudio,
+      playTrack,
+      syncSoundsPlaylist,
+    } from "../scripts/site-audio";
+
     function setupPlaylist() {
-      const audio = document.getElementById("sounds-audio") as HTMLAudioElement | null;
-      const tracks = Array.from(document.querySelectorAll<HTMLElement>(".track"));
-      if (!audio || !tracks.length || audio.dataset.bound) return;
-      audio.dataset.bound = "1";
-      let current: HTMLElement | null = null;
+      const playlist = document.querySelector(".playlist");
+      if (!playlist || (playlist as HTMLElement).dataset.bound) return;
+      (playlist as HTMLElement).dataset.bound = "1";
 
-      const clearActive = () => {
-        tracks.forEach((t) => t.classList.remove("is-playing"));
-      };
-      const markActive = () => {
-        tracks.forEach((t) => t.classList.toggle("is-playing", t === current && !audio.paused));
-        tracks.forEach((t) => {
-          const btn = t.querySelector(".track-play");
-          btn?.setAttribute("aria-pressed", String(t === current && !audio.paused));
-        });
-      };
-
-      tracks.forEach((track) => {
+      playlist.querySelectorAll<HTMLElement>(".track").forEach((track) => {
         const btn = track.querySelector(".track-play") as HTMLButtonElement | null;
         const src = btn?.dataset.src;
         if (!btn || !src) return;
+
         btn.addEventListener("click", async () => {
-          if (current === track && !audio.paused) {
-            audio.pause();
-            markActive();
-            return;
+          const title = track.querySelector(".track-title")?.textContent?.trim() || "track";
+          const { src: current, playing } = getCurrentTrack();
+
+          if (normalizeSrc(src) === current && playing) {
+            pauseAllAudio();
+          } else {
+            await playTrack(src, title);
           }
-          if (audio.src !== location.origin + src) audio.src = src;
-          current = track;
-          try { await audio.play(); } catch {}
-          markActive();
+          syncSoundsPlaylist();
         });
       });
 
-      audio.addEventListener("play", markActive);
-      audio.addEventListener("pause", markActive);
-      audio.addEventListener("ended", () => { clearActive(); markActive(); });
+      syncSoundsPlaylist();
     }
 
     setupPlaylist();
     document.addEventListener("astro:page-load", setupPlaylist);
+    document.addEventListener("site-audio:change", () => syncSoundsPlaylist());
   </script>
 </Base>

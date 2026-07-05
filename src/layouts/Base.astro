@@ -138,21 +138,13 @@ const log = [
     </div>
 
     <script>
-      // Only one site audio source at a time (BGM, sound cards, page players).
-      if (!document.documentElement.dataset.audioExclusive) {
-        document.documentElement.dataset.audioExclusive = "1";
-        document.addEventListener(
-          "play",
-          (e) => {
-            const target = e.target;
-            if (!(target instanceof HTMLAudioElement)) return;
-            document.querySelectorAll("audio").forEach((a) => {
-              if (a !== target) a.pause();
-            });
-          },
-          true
-        );
-      }
+      import {
+        anyAudioPlaying,
+        bindSiteAudioUi,
+        getBgmAudio,
+        syncBgmButton,
+        syncSoundsPlaylist,
+      } from "../scripts/site-audio";
 
       // Reveal-on-scroll — re-runs after every page transition.
       function setupReveal() {
@@ -167,125 +159,130 @@ const log = [
         els.forEach((el) => io.observe(el));
       }
 
-      // Audio-reactive visualizer — a ring of bars around the vinyl that dance to the music.
+      // --- Audio + vinyl visualizer -------------------------------------------
+      // The vinyl reacts to whatever is playing — the BGM dock or a track in the
+      // sounds playlist. One shared AudioContext/analyser; every <audio> is routed
+      // through it once, so the spinning vinyl's waveform always follows the current track.
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      let viz: {
-        analyser: AnalyserNode;
-        data: Uint8Array<ArrayBuffer>;
-        time: Uint8Array<ArrayBuffer>;
-        canvas: HTMLCanvasElement;
-        ctx: CanvasRenderingContext2D;
-        ctxAudio: AudioContext;
-        raf: number;
-      } | null = null;
+      let audioCtx: AudioContext | null = null;
+      let analyser: AnalyserNode | null = null;
+      let freq: Uint8Array<ArrayBuffer>, wave: Uint8Array<ArrayBuffer>;
+      let vctx: CanvasRenderingContext2D | null = null;
+      let vraf = 0;
+      const connectedAudio = new WeakSet<HTMLAudioElement>();
 
-      function ensureViz(audio: HTMLAudioElement) {
-        if (viz || reduceMotion) return;
-        const canvas = document.getElementById("bgm-viz") as HTMLCanvasElement | null;
-        if (!canvas) return;
+      function ensureAudioGraph() {
+        if (audioCtx || reduceMotion) return audioCtx;
         const AC = (window.AudioContext || (window as any).webkitAudioContext);
-        if (!AC) return;
-        try {
-          const ctxAudio = new AC();
-          const src = ctxAudio.createMediaElementSource(audio);
-          const analyser = ctxAudio.createAnalyser();
-          analyser.fftSize = 256;
-          analyser.smoothingTimeConstant = 0.72;
-          src.connect(analyser);
-          analyser.connect(ctxAudio.destination);
+        if (!AC) return null;
+        audioCtx = new AC();
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 256;
+        analyser.smoothingTimeConstant = 0.72;
+        analyser.connect(audioCtx.destination);
+        freq = new Uint8Array(new ArrayBuffer(analyser.frequencyBinCount));
+        wave = new Uint8Array(new ArrayBuffer(analyser.fftSize));
+        const canvas = document.getElementById("bgm-viz") as HTMLCanvasElement | null;
+        if (canvas) {
           const dpr = Math.min(window.devicePixelRatio || 1, 2);
-          const size = 140;
-          canvas.width = size * dpr;
-          canvas.height = size * dpr;
-          canvas.style.width = size + "px";
-          canvas.style.height = size + "px";
-          const ctx = canvas.getContext("2d")!;
-          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-          const data = new Uint8Array(new ArrayBuffer(analyser.frequencyBinCount));
-          const time = new Uint8Array(new ArrayBuffer(analyser.fftSize));
-          viz = { analyser, data, time, canvas, ctx, ctxAudio, raf: 0 };
-        } catch (e) { /* analyser unavailable */ }
+          canvas.width = 140 * dpr;
+          canvas.height = 140 * dpr;
+          canvas.style.width = "140px";
+          canvas.style.height = "140px";
+          vctx = canvas.getContext("2d");
+          vctx?.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+        return audioCtx;
       }
 
-      // One closed oscilloscope ring: the audio waveform wraps the vinyl (mirrored so the
-      // loop closes), the whole ring breathes outward with the bass. Big, lively, in sync.
+      function connectAudio(el: HTMLAudioElement) {
+        if (reduceMotion || connectedAudio.has(el)) return;
+        const c = ensureAudioGraph();
+        if (!c || !analyser) return;
+        try {
+          c.createMediaElementSource(el).connect(analyser);
+          connectedAudio.add(el);
+        } catch (e) { /* already routed, or cross-origin */ }
+      }
+
+      function anyPlaying() {
+        return anyAudioPlaying();
+      }
+
+      function onAudioChange() {
+        syncBgmButton();
+        syncSoundsPlaylist();
+      }
+
+      // One closed oscilloscope ring: the current track's waveform wraps the vinyl
+      // (mirrored so the loop closes) and the whole ring breathes with the bass.
       function drawViz() {
-        if (!viz) return;
-        viz.raf = requestAnimationFrame(drawViz);
-        const { analyser, data, time, ctx } = viz;
-        analyser.getByteFrequencyData(data);
-        analyser.getByteTimeDomainData(time);
+        if (!analyser || !vctx) return;
+        vraf = requestAnimationFrame(drawViz);
+        analyser.getByteFrequencyData(freq);
+        analyser.getByteTimeDomainData(wave);
         const size = 140, cx = size / 2, cy = size / 2;
-        let bass = 0; for (let k = 0; k < 12; k++) bass += data[k];
+        let bass = 0; for (let k = 0; k < 12; k++) bass += freq[k];
         bass = bass / (12 * 255);
-        const baseR = 31 + bass * 15;
-        const amp = 22;
-        const points = 120;
-        const step = Math.max(1, Math.floor(time.length / (points / 2)));
+        const baseR = 31 + bass * 15, amp = 22, points = 120;
+        const step = Math.max(1, Math.floor(wave.length / (points / 2)));
         const rot = (performance.now() / 1000) * 0.25;
-        ctx.clearRect(0, 0, size, size);
-        ctx.beginPath();
+        vctx.clearRect(0, 0, size, size);
+        vctx.beginPath();
         for (let i = 0; i <= points; i++) {
           const idx = i % points;
           const mir = idx < points / 2 ? idx : points - idx;
-          const s = (time[mir * step] - 128) / 128;
+          const s = (wave[mir * step] - 128) / 128;
           const r = baseR + s * amp;
           const a = (idx / points) * Math.PI * 2 - Math.PI / 2 + rot;
           const x = cx + Math.cos(a) * r, y = cy + Math.sin(a) * r;
-          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          if (i === 0) vctx.moveTo(x, y); else vctx.lineTo(x, y);
         }
-        ctx.closePath();
-        ctx.fillStyle = "rgba(176,73,43," + (0.08 + bass * 0.2) + ")";
-        ctx.fill();
-        ctx.lineJoin = "round";
-        ctx.strokeStyle = "rgba(176,73,43," + (0.55 + bass * 0.4) + ")";
-        ctx.lineWidth = 2.8;
-        ctx.stroke();
+        vctx.closePath();
+        vctx.fillStyle = "rgba(176,73,43," + (0.08 + bass * 0.2) + ")";
+        vctx.fill();
+        vctx.lineJoin = "round";
+        vctx.strokeStyle = "rgba(176,73,43," + (0.55 + bass * 0.4) + ")";
+        vctx.lineWidth = 2.8;
+        vctx.stroke();
       }
-
-      function startViz() {
-        if (!viz || viz.raf) return;
-        viz.ctxAudio.resume?.();
-        drawViz();
-      }
+      function startViz() { if (analyser && vctx && !vraf) drawViz(); }
       function stopViz() {
-        if (!viz || !viz.raf) return;
-        cancelAnimationFrame(viz.raf);
-        viz.raf = 0;
-        viz.ctx.clearRect(0, 0, 140, 140);
+        if (vraf) { cancelAnimationFrame(vraf); vraf = 0; }
+        vctx?.clearRect(0, 0, 140, 140);
       }
 
-      // Background music — autoplay if allowed, else start on first interaction.
+      function updateVinyl() {
+        syncBgmButton();
+      }
+
+      // Any audio starts → pause the others, route it to the analyser, spin the vinyl.
+      document.addEventListener("play", (e) => {
+        const el = e.target;
+        if (!(el instanceof HTMLAudioElement)) return;
+        document.querySelectorAll("audio").forEach((a) => { if (a !== el) (a as HTMLAudioElement).pause(); });
+        connectAudio(el);
+        audioCtx?.resume?.();
+        updateVinyl();
+        onAudioChange();
+        startViz();
+      }, true);
+
+      const onAudioStop = (e: Event) => {
+        if (!(e.target instanceof HTMLAudioElement)) return;
+        setTimeout(() => {
+          updateVinyl();
+          onAudioChange();
+          if (!anyPlaying()) stopViz();
+        }, 0);
+      };
+      document.addEventListener("pause", onAudioStop, true);
+      document.addEventListener("ended", onAudioStop, true);
+
       function setupBGM() {
-        const audio = document.getElementById("bgm-audio") as HTMLAudioElement | null;
-        const btn = document.getElementById("bgm-toggle");
-        if (!audio || !btn) return;
-        const sync = () => {
-          btn.classList.toggle("playing", !audio.paused);
-          btn.setAttribute("aria-pressed", String(!audio.paused));
-          btn.setAttribute("aria-label", audio.paused ? "Play background music" : "Pause background music");
-        };
-        const onPlay = () => { ensureViz(audio); startViz(); sync(); };
-        if (!btn.dataset.bound) {
-          btn.dataset.bound = "1";
-          btn.addEventListener("click", async () => {
-            if (audio.paused) { try { await audio.play(); } catch (e) {} }
-            else { audio.pause(); }
-            sync();
-          });
-          audio.addEventListener("play", onPlay);
-          audio.addEventListener("pause", () => { stopViz(); sync(); });
-        }
-        if (!audio.dataset.tried) {
-          audio.dataset.tried = "1";
-          audio.play().then(onPlay).catch(() => {
-            const start = () => { audio.play().then(onPlay).catch(() => {}); };
-            const evs = ["pointerdown", "keydown", "touchstart"];
-            const once = () => { start(); evs.forEach((ev) => document.removeEventListener(ev, once)); };
-            evs.forEach((ev) => document.addEventListener(ev, once, { once: true }));
-          });
-        }
-        sync();
+        bindSiteAudioUi();
+        const bgm = getBgmAudio();
+        if (bgm) connectAudio(bgm);
       }
 
       // Discourage saving the audio — block the right-click "Save audio as" menu on media.
@@ -312,7 +309,13 @@ const log = [
         });
       });
 
-      document.addEventListener("astro:page-load", () => { setupReveal(); setupBGM(); });
+      document.addEventListener("astro:page-load", () => {
+        setupReveal();
+        setupBGM();
+        onAudioChange();
+        if (!anyPlaying()) stopViz();
+        else startViz();
+      });
       setupReveal();
       setupBGM();
     </script>

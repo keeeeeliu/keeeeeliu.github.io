@@ -982,6 +982,21 @@ article pre, .prose pre { overflow: auto; background: var(--deep); color: var(--
 .quote-en { color: #6E6047; margin: 0 0 0.6rem; }
 .quote figcaption { color: var(--muted); font-size: 0.9rem; }
 
+/* collected — link list */
+.link-list { list-style: none; margin: 0; padding: 0; }
+.link-item {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 1.2rem;
+  padding: 0.95rem 0; border-top: 1px solid var(--border);
+  text-decoration: none; color: inherit;
+}
+.link-list li:last-child .link-item { border-bottom: 1px solid var(--border); }
+.link-item:hover { text-decoration: none; }
+.link-item-main { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
+.link-title { font-family: "Fraunces", var(--font-cjk), Georgia, serif; font-size: 1.3rem; color: var(--deep); transition: color var(--dur) var(--ease); }
+.link-item:hover .link-title { color: var(--terracotta); }
+.link-note { font-family: var(--font-read); font-size: 0.92rem; color: var(--muted); line-height: 1.4; }
+.link-site { font-family: var(--font-body); font-size: 0.82rem; color: var(--terracotta); white-space: nowrap; flex-shrink: 0; }
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .bunny-mark .solar, .bunny-mark .eyes, .bunny-mark .ears,

@@ -3,13 +3,41 @@ import Base from "../layouts/Base.astro";
 import { getCollection } from "astro:content";
 
 const quotes = await getCollection("quotes");
+
+// Links to things worth returning to — add more here freely.
+const links = [
+  {
+    title: "《莊子》",
+    url: "https://ctext.org/zhuangzi/zhs",
+    note: " \"The Writings of Chuang Tzu\", James Legge, 1891",
+    site: "ctext.org",
+  },
+  {
+    title: "《装腔启示录》",
+    url: "https://www.youtube.com/playlist?list=PLEwMCGv50LfLmhYZ1-q11wTQqbuxezLSa",
+    note: "Fake It Till You Make It",
+    site: "youtube.com",
+  },
+  {
+    title: "Project Hail Mary",
+    url: "https://www.imdb.com/title/tt12042730/",
+    note: "the 2026 sci-fi film ",
+    site: "imdb.com",
+  },
+  {
+    title: "Siddhartha",
+    url: "https://www.goodreads.com/en/book/show/52036.Siddhartha",
+    note: "Hermann Hesse's novel",
+    site: "goodreads.com",
+  },
+];
 ---
 
 <Base title="collected" description="Things I love, that I didn't make — songs, books, excerpts, and more.">
   <section class="hero" style="padding-bottom:1.5rem;">
     <span class="eyebrow">collected</span>
-    <h1>Things worth keeping</h1>
-    <p class="lead">Things I love that I didn't make — songs, books, excerpts, objects, a certain kind of light. A running collection.</p>
+    <h1></h1>
+    <p class="lead">movies, dramas, songs, books, excerpts, objects, and more. A running collection.</p>
   </section>
 
   <section class="reveal">
@@ -23,6 +51,23 @@ const quotes = await getCollection("quotes");
         </figure>
       ))}
     </div>
-    <p style="color:var(--muted); margin-top:1.5rem;">Songs, books, and other loves will gather here too — coming soon.</p>
+  </section>
+
+  <section class="reveal" style="margin-top:2.5rem;">
+    <h2>links</h2>
+    <ul class="link-list">
+      {links.map((l) => (
+        <li>
+          <a class="link-item" href={l.url} target="_blank" rel="noreferrer">
+            <span class="link-item-main">
+              <span class="link-title">{l.title}</span>
+              {l.note && <span class="link-note">{l.note}</span>}
+            </span>
+            <span class="link-site">{l.site} ↗</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+
   </section>
 </Base>
