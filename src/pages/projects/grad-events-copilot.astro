@@ -31,10 +31,10 @@ import Project from "../../layouts/Project.astro";
     <h2>Why I built it</h2>
     <p>
       Producing the monthly grad newsletter meant scanning scattered calendars, weeding out duplicate
-      listings, judging what was relevant to grad students, and reformatting everything by hand — a few
-      hours of low-value work every cycle. So I built a copilot that does the gathering, de-duplication,
+      listings, judging what was relevant to grad students, and reformatting everything by hand — repetitive 
+      work every cycle. So I built a copilot that does the gathering, de-duplication,
       and relevance scoring and drafts the newsletter, while the editorial judgment stays with me. It's
-      part of my actual workflow, not a demo.
+      part of my actual workflow now.
     </p>
   </section>
 
@@ -42,7 +42,7 @@ import Project from "../../layouts/Project.astro";
     <h2>What it does</h2>
     <ul>
       <li>Pulls structured events from Brown's LiveWhale calendar feed</li>
-      <li>De-duplicates recurring / multi-source listings (a real month: 331 raw → 105 unique)</li>
+      <li>De-duplicates recurring / multi-source listings (e.g. 2026 June: 331 raw → 105 unique)</li>
       <li>
         LLM enrichment scores each event's grad-relevance, audience, and category — grounded, with a
         one-line rationale for every score
@@ -54,32 +54,22 @@ import Project from "../../layouts/Project.astro";
   </section>
 
   <section>
-    <h2>Engineered like a product, not an LLM wrapper</h2>
+    <h2>Engineering</h2>
     <ul>
-      <li>Multi-stage pipeline (ingest → dedupe → LLM enrichment → rank), not a single prompt call</li>
+      <li>Multi-stage pipeline (ingest → dedupe → LLM enrichment → rank)</li>
       <li>Structured output validated with Pydantic, plus grounded / anti-hallucination extraction</li>
       <li>Cost &amp; latency telemetry — tokens and $ per run tracked in-app</li>
-      <li>Evaluation harness measuring enrichment quality vs. hand labels — the part most portfolios skip</li>
+      <li>Evaluation harness measuring enrichment quality vs. hand labels </li>
       <li>Cut a full month's enrichment from ~207s → ~27s (~7.5×) with concurrent per-event calls</li>
-      <li>Deployed &amp; live: Next.js on Vercel, FastAPI on Railway — the API key never touches the browser</li>
+      <li>Deployed &amp; live: Next.js on Vercel, FastAPI on Railway </li>
     </ul>
-  </section>
-
-  <section>
-    <h2>How it works</h2>
-    <p>
-      The Next.js frontend calls a FastAPI backend that runs the whole pipeline and holds the LLM key
-      server-side. One "Fetch events" click flows: browser → HTTPS → FastAPI → fetch Brown's calendar →
-      dedupe → concurrent LLM scoring → JSON back → the UI re-renders. (Full request walkthrough in the
-      repo README.)
-    </p>
   </section>
 
   <section>
     <h2>What's next (Wave B)</h2>
     <p>
       An agentic outreach assistant: a LangGraph agent drafts personalized emails to campus orgs —
-      grounded in the events we already know about — then pauses for my approval before anything sends.
+      grounded in the events we already know about — then pauses for user's approval before anything sends.
       Human-in-the-loop, with persistent workflow state. (In progress.)
     </p>
   </section>
