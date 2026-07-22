@@ -40,11 +40,13 @@ description: Curriculum Vitae
 
 **Languages:** C++, C, Rust, Go, Python, Java, JavaScript, TypeScript, SQL, Bash/Shell, HTML/CSS
 
-**Frameworks & Libraries:** React, TailwindCSS, Node.js, Express.js, gRPC, OpenCV
+**Frontend:** React, Next.js, Astro, TailwindCSS, responsive design, Chrome Extension API
 
-**Databases & Dev Tools:** MongoDB, Redis, Elasticsearch, Git, Docker, Kubernetes, Helm, Wireshark, Linux/Unix
+**Frameworks & Backend:** Node.js, Express.js, FastAPI, gRPC, OpenCV
 
-**Cloud & Platforms:** AWS EC2, RESTful APIs, OAuth 2.0
+**Databases & Dev Tools:** MongoDB, Redis, Elasticsearch, Git, GitHub Actions, Docker, Kubernetes, Helm, Wireshark, Linux/Unix
+
+**Cloud & Platforms:** AWS EC2, Vercel, Railway, RESTful APIs, OAuth 2.0
 
 **Research & Product:** Research synthesis, technical writing, market and competitor analysis, qualitative data analysis, USPTO basic patent training
 
@@ -57,6 +59,22 @@ description: Curriculum Vitae
 > _Providence, RI | Summer 2026_
 
 - Coordinate master's student communications, including newsletter, email, and social media, and support community-building and orientation programming for graduate and international students.
+
+### [Grad Events & Newsletter Copilot](https://sparks-livid.vercel.app/) _- Full-Stack Developer (solo)_
+
+> _Brown University · Providence, RI | 2026 · [portfolio](https://keeeeeliu.github.io/projects/grad-events-copilot/)_
+
+- Built and deployed a production Next.js + FastAPI app that ingests Brown calendar events, de-duplicates listings (331→105 in one month), LLM-scores grad relevance, and drafts newsletter copy — cut prep from ~3 hours to ~15 minutes per issue.
+- Integrated frontend with REST backend (Vercel ↔ Railway): date-range fetch, concurrent enrichment, Pydantic-validated JSON to UI; API keys server-side only.
+- Engineered multi-stage pipeline with eval harness, cost/latency telemetry, and ~7.5× enrichment speedup (207s→27s) via concurrent per-event LLM calls; human-in-the-loop throughout.
+
+### [Full Stack at Brown](https://www.fullstackatbrown.com/) _- Frontend Developer (pro-bono client team)_
+
+> _Providence, RI | Fall 2025 · Client: [Pediatric Anxiety Research Center](https://www.parcanxiety.org/) · [portfolio](https://keeeeeliu.github.io/projects/parc/)_
+
+- Owned site-wide navigation (React, Tailwind): multi-level dropdowns, IA across Treatment / Research / Training / About, responsive layout, and persistent Donate CTA — the single entry point for all user paths on a live clinical site.
+- Built the Training section and site footer end-to-end — React Router pages, reusable components from Figma handoff, and integration with the team's Vite + headless CMS stack.
+- Collaborated with designers and backend engineers through code reviews and design iterations; balanced client information architecture with accessible navigation for families seeking care.
 
 ### PlugPal - Ross Business School Tech + Business Challenge _- Team Lead_
 
@@ -83,13 +101,6 @@ description: Curriculum Vitae
 - Led weekly meetings with 5 team members, faculty, and stakeholders, communicating progress, gathering requirements, and incorporating technical feedback.
 - Developed a public-facing visualization to educate visitors on a reproducible carbon-neutral model for local farms.
 
-### [Full Stack at Brown](https://www.fullstackatbrown.com/) _- Frontend Developer_
-
-> _Providence, RI | Fall 2025_
-
-- Developed the redesigned website for the [Pediatric Anxiety Research Center](https://keeeeeliu.github.io/projects/parc/) to enhance responsive UI and user navigation.
-- Implemented new features to present community mental health grant initiatives and research information, collaborating with designers and backend engineers through code reviews and design discussions.
-
 ### "Gender, Labor, and Human-Machine Reconfiguration in China" Project _- Research Assistant_
 
 > _Ann Arbor, MI | Summer 2023_
@@ -100,6 +111,12 @@ description: Curriculum Vitae
 ***
 
 ## Projects
+
+### [bononokoko](https://keeeeeliu.github.io/) _- Personal Portfolio_
+
+**Stack:** Astro, TypeScript, MDX, vanilla CSS, Web Audio API, GitHub Actions
+
+- Designed and built personal portfolio with custom design system, room-based navigation, responsive layout, global audio state across routes, and GitHub Pages CI deploy.
 
 ### RFC-Oriented TCP Stack over a Custom IP Layer
 
@@ -133,14 +150,6 @@ description: Curriculum Vitae
 - Implemented two cache subsystems with distinct access and eviction strategies, including look-aside vs. look-through and FIFO vs. LRU, achieving significant throughput gains.
 - Optimized the persistent storage subsystem by reducing syscall overhead, improving throughput and crash-recovery correctness.
 - Built end-to-end performance instrumentation under wrk2 Zipfian workloads; containerized and deployed on Kubernetes via Helm with multi-node load testing, pod restarts, and automated benchmarking pipelines.
-
-### [Grad Events & Newsletter Copilot](https://keeeeeliu.github.io/projects/grad-events-copilot/) _- Full-Stack AI_
-
-**Stack:** Next.js, TypeScript, FastAPI, Python, Vercel, Railway, OpenAI
-
-- Designed and deployed a production full-stack AI application that ingests, de-duplicates, and LLM-scores university events into a human-reviewed newsletter draft, cutting a recurring ~3-hour manual workflow to ~15 minutes.
-- Engineered a multi-stage LLM pipeline with Pydantic-validated structured output, grounded anti-hallucination extraction, and an evaluation harness; cut full-month enrichment latency ~7.5x, from 207s to 27s, via concurrent per-event calls.
-- Instrumented per-request token, cost, and latency telemetry and kept human-in-the-loop approval throughout, with all LLM keys served server-side.
 
 ### [LearnFlow](https://keeeeeliu.github.io/projects/learnflow/) _- AI-Powered Learning Extension_
 

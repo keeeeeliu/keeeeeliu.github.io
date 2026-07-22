@@ -9,14 +9,14 @@ import Project from "../../layouts/Project.astro";
   lead="A keyboard-controlled arcade game built as a web page: dodge asteroids, collect shields, travel through portals, and keep your score climbing as the danger increases."
   links={[
     { label: "Play live game →", href: "https://keeeeeliu.github.io/asteroids-game/", primary: true },
-    { label: "Source code →", href: "https://github.com/keeeeeliu/asteroids-game" },
+    // { label: "Source code →", href: "https://github.com/keeeeeliu/asteroids-game" },
   ]}
   facts={[
     { label: "Type", value: "Static web game" },
     { label: "Year", value: "2024" },
     { label: "Controls", value: "Arrow keys" },
     { label: "Built for", value: "EECS 493" },
-    { label: "Status", value: "Ready to deploy separately" },
+    { label: "Status", value: "Deployed" },
   ]}
   stack={["HTML", "CSS", "JavaScript", "jQuery", "Sprites", "Audio"]}
 >
@@ -40,20 +40,13 @@ import Project from "../../layouts/Project.astro";
     </ul>
   </section>
 
-  <section>
+  <!-- <section>
     <h2>Why it belongs here</h2>
     <p>
       The project is small, but it shows the core mechanics of an interactive web experience:
       keyboard input, collision detection, timed object spawning, score updates, game state transitions,
       and asset-driven animation.
     </p>
-  </section>
+  </section> -->
 
-  <section>
-    <h2>Deployment note</h2>
-    <p>
-      The game itself lives in a separate GitHub repository and is deployed with GitHub Pages, so this
-      portfolio page can link out to the playable version without copying the game files into BellaWeb.
-    </p>
-  </section>
 </Project>
